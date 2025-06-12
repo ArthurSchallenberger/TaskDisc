@@ -8,6 +8,7 @@ public class PingPong : ModuleBase<SocketCommandContext>
     {
         Console.WriteLine("Comando ping executado!");
         await ReplyAsync("Pong!");
+        
     }
     [Command("pong")]
     public async Task PongAsync()

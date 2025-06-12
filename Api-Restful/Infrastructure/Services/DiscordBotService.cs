@@ -32,7 +32,7 @@ public class DiscordBotService : IHostedService
         _client.Ready += ReadyAsync;
         _client.MessageReceived += HandleCommandAsync;
 
-        // Carrega todos os comandos disponíveis
+        
         var modules = await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
         Console.WriteLine($"Módulos carregados: {modules.Count()}");
         foreach (var module in modules)
