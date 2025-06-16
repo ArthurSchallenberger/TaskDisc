@@ -4,37 +4,37 @@ using System.Collections.Generic;
 
 public class DatabaseContext : DbContext
 {
-    public DbSet<Usuario> Usuarios { get; set; }
-    public DbSet<UsuarioTarefa> UsuarioTarefas { get; set; }
-    public DbSet<Tarefa> Tarefas { get; set; }
-    public DbSet<Cargo> Cargos { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<TaskUser> TaskUsers { get; set; }
+    public DbSet<Task> Tasks { get; set; }
+    public DbSet<JobTitles> JobTitles { get; set; }
     public DbSet<Token> Tokens { get; set; }
 
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<UsuarioTarefa>()
-            .HasKey(ut => new { ut.ID_Usuario, ut.ID_Tarefa });
+        modelBuilder.Entity<TaskUser>()
+            .HasKey(ut => new { ut.ID_User, ut.ID_Task });
 
-        modelBuilder.Entity<Usuario>()
-            .HasMany(u => u.UsuarioTarefas)
-            .WithOne(ut => ut.Usuario)
-            .HasForeignKey(ut => ut.ID_Usuario);
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.TaskUsers)
+            .WithOne(ut => ut.User)
+            .HasForeignKey(ut => ut.ID_User);
 
-        modelBuilder.Entity<Tarefa>()
-            .HasMany(t => t.UsuarioTarefas)
-            .WithOne(ut => ut.Tarefa)
-            .HasForeignKey(ut => ut.ID_Tarefa);
+        modelBuilder.Entity<Task>()
+            .HasMany(t => t.TaskUsers)
+            .WithOne(ut => ut.Task)
+            .HasForeignKey(ut => ut.ID_Task);
 
-        modelBuilder.Entity<Usuario>()
-            .HasOne(u => u.Cargo)
-            .WithMany(c => c.Usuarios)
-            .HasForeignKey(u => u.ID_Cargo);
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.JobTitle)
+            .WithMany(c => c.User)
+            .HasForeignKey(u => u.ID_JobTitle);
 
-        modelBuilder.Entity<Usuario>()
+        modelBuilder.Entity<User>()
             .HasMany(u => u.Tokens)
-            .WithOne(t => t.Usuario)
-            .HasForeignKey(t => t.ID_Usuario);
+            .WithOne(t => t.User)
+            .HasForeignKey(t => t.ID_User);
     }
 }

@@ -26,7 +26,7 @@ public class DiscordBotService : IHostedService
         _token = configuration["Discord:Token"];
     }
 
-    public async Task StartAsync(CancellationToken cancellationToken)
+    public async System.Threading.Tasks.Task StartAsync(CancellationToken cancellationToken)
     {
         _client.Log += LogAsync;
         _client.Ready += ReadyAsync;
@@ -44,24 +44,24 @@ public class DiscordBotService : IHostedService
         await _client.StartAsync();
     }
 
-    public async Task StopAsync(CancellationToken cancellationToken)
+    public async System.Threading.Tasks.Task StopAsync(CancellationToken cancellationToken)
     {
         await _client.StopAsync();
     }
 
-    private Task LogAsync(LogMessage log)
+    private System.Threading.Tasks.Task LogAsync(LogMessage log)
     {
         Console.WriteLine(log.ToString());
-        return Task.CompletedTask;
+        return System.Threading.Tasks.Task.CompletedTask;
     }
 
-    private Task ReadyAsync()
+    private System.Threading.Tasks.Task ReadyAsync()
     {
         Console.WriteLine($"{_client.CurrentUser} está conectado!");
-        return Task.CompletedTask;
+        return System.Threading.Tasks.Task.CompletedTask;
     }
 
-    private async Task HandleCommandAsync(SocketMessage messageParam)
+    private async System.Threading.Tasks.Task HandleCommandAsync(SocketMessage messageParam)
     {
         var message = messageParam as SocketUserMessage;
         if (message == null)

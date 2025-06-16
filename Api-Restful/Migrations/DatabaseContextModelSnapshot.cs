@@ -21,7 +21,7 @@ namespace Api_Restful.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Cargo", b =>
+            modelBuilder.Entity("JobTitles", b =>
                 {
                     b.Property<int>("ID_PK")
                         .ValueGeneratedOnAdd()
@@ -29,20 +29,20 @@ namespace Api_Restful.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID_PK"));
 
-                    b.Property<string>("Abreviacao")
+                    b.Property<string>("Abbreviation")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Nome")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("ID_PK");
 
-                    b.ToTable("Cargos");
+                    b.ToTable("JobTitles");
                 });
 
-            modelBuilder.Entity("Tarefa", b =>
+            modelBuilder.Entity("Task", b =>
                 {
                     b.Property<int>("ID_PK")
                         .ValueGeneratedOnAdd()
@@ -50,30 +50,45 @@ namespace Api_Restful.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID_PK"));
 
-                    b.Property<string>("Assunto")
+                    b.Property<DateTime?>("Completion_Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("Creation_Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("Data_Conclusao")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("Data_Criacao")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Prioridade")
+                    b.Property<int>("Priority")
                         .HasColumnType("integer");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("ID_PK");
 
-                    b.ToTable("Tarefas");
+                    b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("TaskUser", b =>
+                {
+                    b.Property<int>("ID_User")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ID_Task")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ID_User", "ID_Task");
+
+                    b.HasIndex("ID_Task");
+
+                    b.ToTable("TaskUsers");
                 });
 
             modelBuilder.Entity("Token", b =>
@@ -84,20 +99,20 @@ namespace Api_Restful.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID_PK"));
 
-                    b.Property<DateTime>("Data_Criacao")
+                    b.Property<DateTime>("Creation_Date")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("ID_Usuario")
+                    b.Property<int>("ID_User")
                         .HasColumnType("integer");
 
                     b.HasKey("ID_PK");
 
-                    b.HasIndex("ID_Usuario");
+                    b.HasIndex("ID_User");
 
                     b.ToTable("Tokens");
                 });
 
-            modelBuilder.Entity("Usuario", b =>
+            modelBuilder.Entity("User", b =>
                 {
                     b.Property<int>("ID_PK")
                         .ValueGeneratedOnAdd()
@@ -109,98 +124,83 @@ namespace Api_Restful.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("ID_Cargo")
+                    b.Property<int>("ID_JobTitle")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("ID_Tokens")
+                    b.Property<int?>("ID_Token")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Nome")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Senha")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("ID_PK");
 
-                    b.HasIndex("ID_Cargo");
+                    b.HasIndex("ID_JobTitle");
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("UsuarioTarefa", b =>
+            modelBuilder.Entity("TaskUser", b =>
                 {
-                    b.Property<int>("ID_Usuario")
-                        .HasColumnType("integer");
+                    b.HasOne("Task", "Task")
+                        .WithMany("TaskUsers")
+                        .HasForeignKey("ID_Task")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<int>("ID_Tarefa")
-                        .HasColumnType("integer");
+                    b.HasOne("User", "User")
+                        .WithMany("TaskUsers")
+                        .HasForeignKey("ID_User")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasKey("ID_Usuario", "ID_Tarefa");
+                    b.Navigation("Task");
 
-                    b.HasIndex("ID_Tarefa");
-
-                    b.ToTable("UsuarioTarefas");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Token", b =>
                 {
-                    b.HasOne("Usuario", "Usuario")
+                    b.HasOne("User", "User")
                         .WithMany("Tokens")
-                        .HasForeignKey("ID_Usuario")
+                        .HasForeignKey("ID_User")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Usuario");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Usuario", b =>
+            modelBuilder.Entity("User", b =>
                 {
-                    b.HasOne("Cargo", "Cargo")
-                        .WithMany("Usuarios")
-                        .HasForeignKey("ID_Cargo")
+                    b.HasOne("JobTitles", "JobTitle")
+                        .WithMany("User")
+                        .HasForeignKey("ID_JobTitle")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Cargo");
+                    b.Navigation("JobTitle");
                 });
 
-            modelBuilder.Entity("UsuarioTarefa", b =>
+            modelBuilder.Entity("JobTitles", b =>
                 {
-                    b.HasOne("Tarefa", "Tarefa")
-                        .WithMany("UsuarioTarefas")
-                        .HasForeignKey("ID_Tarefa")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Usuario", "Usuario")
-                        .WithMany("UsuarioTarefas")
-                        .HasForeignKey("ID_Usuario")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tarefa");
-
-                    b.Navigation("Usuario");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Cargo", b =>
+            modelBuilder.Entity("Task", b =>
                 {
-                    b.Navigation("Usuarios");
+                    b.Navigation("TaskUsers");
                 });
 
-            modelBuilder.Entity("Tarefa", b =>
+            modelBuilder.Entity("User", b =>
                 {
-                    b.Navigation("UsuarioTarefas");
-                });
+                    b.Navigation("TaskUsers");
 
-            modelBuilder.Entity("Usuario", b =>
-                {
                     b.Navigation("Tokens");
-
-                    b.Navigation("UsuarioTarefas");
                 });
 #pragma warning restore 612, 618
         }
