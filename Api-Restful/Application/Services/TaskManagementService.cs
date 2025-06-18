@@ -1,5 +1,6 @@
 ﻿using Api_Restful.Application.Interfaces;
-using Api_Restful.Core.UseCases;
+using Api_Restful.Presentation.Dto;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Api_Restful.Application.Services
 {
@@ -12,9 +13,29 @@ namespace Api_Restful.Application.Services
             _taskRepository = taskRepository;
         }
 
-        public Task CreateTask(Task task)
+        public async Task<Task> CreateTask(TaskDto taskDto)
         {
-            // Lógica de validação e persistência
+            if (taskDto == null)
+            {
+                throw new ArgumentNullException(nameof(taskDto), "Task data cannot be null.");
+            }
+
+            if (string.IsNullOrEmpty(taskDto.Description))
+            {
+                throw new ArgumentException("Description is mandatory.", nameof(taskDto.Description));
+            }
+
+            var task = new Task
+            {
+                ID_PK = taskDto.ID_PK,
+                Description = taskDto.Description,
+                Status = taskDto.Status,
+                Creation_Date = DateTime.UtcNow,
+                Priority = taskDto.Priority ?? 0,
+                Subject = taskDto.Subject ?? "Sem Assunto",
+              
+            };
+
             return _taskRepository.Add(task);
         }
 
@@ -24,16 +45,31 @@ namespace Api_Restful.Application.Services
         }
 
 
-        public Task UpdateTask(Task task)
+        public async Task<Task> UpdateTask(TaskDto taskDto)
         {
-            // Lógica de validação e atualização
-            return _taskRepository.Update(task);
+            if (taskDto == null) throw new ArgumentNullException(nameof(taskDto), "Task data cannot be null.");
+            var existingTask = _taskRepository.GetById(taskDto.ID_PK);
+            if (existingTask == null) throw new InvalidOperationException("Task not found.");
+
+            
+            existingTask.Subject = taskDto.Subject ?? existingTask.Subject;
+            existingTask.Description = taskDto.Description ?? existingTask.Description;
+            existingTask.Status = taskDto.Status ?? existingTask.Status;
+            existingTask.Priority = (int)(taskDto.Priority != 0 ? taskDto.Priority : existingTask.Priority);
+
+            return _taskRepository.Update(existingTask);
         }
 
         public bool DeleteTask(int id)
         {
-            // Lógica de soft delete
-            return _taskRepository.Delete(id);
+            var task = _taskRepository.GetById(id);
+            if (task == null) return false;
+            return _taskRepository.Delete(id); 
+        }
+
+        public List<Task> GetTasksByUserId(int userId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

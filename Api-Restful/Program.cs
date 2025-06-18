@@ -23,6 +23,10 @@ builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(buil
 builder.Services.AddScoped<IAuthenticationService, JwtAuthenticationService>();
 builder.Services.AddScoped<ITaskUserService, TaskUserManagementService>();
 builder.Services.AddScoped<ITaskUserRepository, TaskUserRepository>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<ITaskService, TaskManagementService>();
+builder.Services.AddScoped<IUserService, UserManagementService>(); 
+builder.Services.AddScoped<IUserRepository, UserRepository>();   
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>

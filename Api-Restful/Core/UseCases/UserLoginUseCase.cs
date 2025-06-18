@@ -2,7 +2,7 @@
 
 namespace Api_Restful.Core.UseCases
 {
-    public class UserLoginUseCase : IUserService
+    public class UserLoginUseCase 
     {
         private readonly IAuthenticationService _authService;
 

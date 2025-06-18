@@ -23,7 +23,7 @@ namespace Api_Restful.Infrastructure.Repositories
             return _context.Tasks.Find(id);
         }
 
-    
+
 
         public Task Update(Task task)
         {
@@ -36,6 +36,7 @@ namespace Api_Restful.Infrastructure.Repositories
         {
             var task = _context.Tasks.Find(id);
             if (task == null) return false;
+            _context.Tasks.Remove(task);
             _context.SaveChanges();
             return true;
         }

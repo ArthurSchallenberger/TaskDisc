@@ -1,4 +1,5 @@
-﻿using Api_Restful.Core.UseCases;
+﻿using Api_Restful.Application.Interfaces;
+using Api_Restful.Presentation.Dto;
 using Discord;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ namespace Api_Restful.Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController
     {
         private readonly IUserService _userService;
 
@@ -16,37 +17,29 @@ namespace Api_Restful.Presentation.Controllers
             _userService = userService;
         }
 
-        //[HttpPost]
-        //public IActionResult CreateUser([FromBody] User user)
-        //{
-        //    if (user == null) return BadRequest("User data is required.");
-        //    var createdUser = _userService.CreateUser(user);
-        //    return CreatedAtAction(nameof(GetUser), new { id = createdUser.ID_PK }, createdUser);
-        //}
+        [HttpPost]
+        public async Task<User> createUser(UserDto userDto)
+        {
+            return await _userService.CreateUser(userDto);
+        }
 
-        //[HttpGet("{id}")]
-        //public IActionResult GetUser(int id)
-        //{
-        //    var user = _userService.GetUserById(id);
-        //    if (user == null) return NotFound();
-        //    return Ok(user);
-        //}   
+        [HttpDelete("{id}")]
+        public bool DeleteUser(int id)
+        {
+            return _userService.DeleteUser(id);
+        }
 
-        //[HttpPut("{id}")]
-        //public IActionResult UpdateUser(int id, [FromBody] User user)
-        //{
-        //    if (user == null || id != user.ID_PK) return BadRequest("Invalid user data or ID mismatch.");
-        //    var updatedUser = _userService.UpdateUser(user);
-        //    if (updatedUser == null) return NotFound();
-        //    return Ok(updatedUser);
-        //}
+        [HttpPut("{id}")]
+        public async Task<User> UpdateUser(int id, UserDto userDto)
+        {
+            userDto.ID_PK = id; 
+            return await _userService.UpdateUser(userDto);
+        }
 
-        //[HttpDelete("{id}")]
-        //public IActionResult DeleteUser(int id)
-        //{
-        //    var success = _userService.SoftDeleteUser(id);
-        //    if (!success) return NotFound();
-        //    return NoContent();
-        //}
+        [HttpGet("{id}")]
+        public async Task<UserDto> GetUserById(int id)
+        {
+            return await _userService.GetUserById(id);
+        }
     }
 }
