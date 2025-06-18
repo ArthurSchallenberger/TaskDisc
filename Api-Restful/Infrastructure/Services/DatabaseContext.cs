@@ -17,6 +17,17 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<TaskUser>()
             .HasKey(ut => new { ut.ID_User, ut.ID_Task });
 
+        modelBuilder.Entity<TaskUser>()
+                .HasOne(tu => tu.User)
+                .WithMany(u => u.TaskUsers)
+                .HasForeignKey(tu => tu.ID_User);
+
+        modelBuilder.Entity<TaskUser>()
+            .HasOne(tu => tu.Task)
+            .WithMany(t => t.TaskUsers) 
+            .HasForeignKey(tu => tu.ID_Task);
+
+
         modelBuilder.Entity<User>()
             .HasMany(u => u.TaskUsers)
             .WithOne(ut => ut.User)

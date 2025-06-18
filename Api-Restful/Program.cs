@@ -1,10 +1,14 @@
 using Api_Restful.Application.Interfaces;
+using Api_Restful.Application.Services;
+using Api_Restful.Core.UseCases;
+using Api_Restful.Infrastructure.Repositories;
 using Api_Restful.Infrastructure.Services;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +21,8 @@ builder.Services.AddSingleton<DiscordSocketClient>();
 builder.Services.AddSingleton<CommandService>();
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IAuthenticationService, JwtAuthenticationService>();
-
+builder.Services.AddScoped<ITaskUserService, TaskUserManagementService>();
+builder.Services.AddScoped<ITaskUserRepository, TaskUserRepository>();
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
