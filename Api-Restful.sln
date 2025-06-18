@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36202.13 d17.14
+VisualStudioVersion = 17.14.36202.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api-Restful", "Api-Restful\Api-Restful.csproj", "{AB3D3355-8BF9-4677-A7AB-51C05C88D950}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ModalDiscord", "ModalDiscord\ModalDiscord.esproj", "{F78FDCAB-1133-0BDA-3A98-8A3970FA48CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,12 @@ Global
 		{AB3D3355-8BF9-4677-A7AB-51C05C88D950}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB3D3355-8BF9-4677-A7AB-51C05C88D950}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB3D3355-8BF9-4677-A7AB-51C05C88D950}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F78FDCAB-1133-0BDA-3A98-8A3970FA48CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F78FDCAB-1133-0BDA-3A98-8A3970FA48CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F78FDCAB-1133-0BDA-3A98-8A3970FA48CB}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F78FDCAB-1133-0BDA-3A98-8A3970FA48CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F78FDCAB-1133-0BDA-3A98-8A3970FA48CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F78FDCAB-1133-0BDA-3A98-8A3970FA48CB}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
