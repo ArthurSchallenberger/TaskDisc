@@ -1,4 +1,5 @@
-﻿using Api_Restful.Presentation.Dto;
+﻿using Api_Restful.Core.Entities;
+using Api_Restful.Presentation.Dto;
 
 namespace Api_Restful.Application.Interfaces
 {
@@ -9,5 +10,7 @@ namespace Api_Restful.Application.Interfaces
         List<User> GetUsersByCargoId(int cargoId);
         Task<User> UpdateUser(UserDto userDto);
         bool DeleteUser(int id);
+
+        Task<IEnumerable<UserDto>> GetAllUsers();
     }
 }

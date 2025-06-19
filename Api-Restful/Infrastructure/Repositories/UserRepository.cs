@@ -1,4 +1,5 @@
 ﻿using Api_Restful.Application.Interfaces;
+using Api_Restful.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api_Restful.Infrastructure.Repositories
@@ -40,9 +41,14 @@ namespace Api_Restful.Infrastructure.Repositories
         {
             var user = _context.Users.FirstOrDefault(u => u.ID_PK == id);
             if (user == null) return false;
-            _context.Users.Remove(user); 
+            _context.Users.Remove(user);
             _context.SaveChanges();
             return true;
+        }
+
+        public IEnumerable<User> GetAll()
+        {
+            return _context.Users.Include(u => u.JobTitle).ToList();
         }
     }
 }

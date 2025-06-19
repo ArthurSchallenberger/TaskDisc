@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-public class Task
+namespace Api_Restful.Core.Entities;
+
+public class TaskEntity
 {
     [Key]
     public int ID_PK { get; set; }

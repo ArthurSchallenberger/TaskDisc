@@ -1,4 +1,6 @@
-﻿namespace Api_Restful.Application.Interfaces
+﻿using Api_Restful.Core.Entities;
+
+namespace Api_Restful.Application.Interfaces
 {
     public interface ITaskUserRepository
     {

@@ -1,4 +1,5 @@
 ﻿using Api_Restful.Application.Interfaces;
+using Api_Restful.Core.Entities;
 
 namespace Api_Restful.Infrastructure.Repositories
 {
@@ -11,21 +12,14 @@ namespace Api_Restful.Infrastructure.Repositories
             _context = context;
         }
 
-        public Task Add(Task task)
+        public TaskEntity Add(TaskEntity task)
         {
             _context.Tasks.Add(task);
             _context.SaveChanges();
             return task;
         }
 
-        public Task GetById(int id)
-        {
-            return _context.Tasks.Find(id);
-        }
-
-
-
-        public Task Update(Task task)
+        public TaskEntity Update(TaskEntity task)
         {
             _context.Tasks.Update(task);
             _context.SaveChanges();
@@ -40,5 +34,18 @@ namespace Api_Restful.Infrastructure.Repositories
             _context.SaveChanges();
             return true;
         }
+
+
+        #region Gets
+        public IEnumerable<TaskEntity> GetAll()
+        {
+            return _context.Tasks.ToList();
+        }
+
+        public TaskEntity GetById(int id)
+        {
+            return _context.Tasks.Find(id);
+        }
+        #endregion
     }
 }

@@ -1,13 +1,13 @@
-﻿using Api_Restful.Presentation.Dto;
+﻿using Api_Restful.Core.Entities;
+using Api_Restful.Presentation.Dto;
 
 namespace Api_Restful.Application.Interfaces
 {
     public interface ITaskService
     {
-        Task<Task> CreateTask(TaskDto taskDto);
-        Task GetTaskById(int id);
-        List<Task> GetTasksByUserId(int userId);
-        Task<Task> UpdateTask(TaskDto taskDto);
+        Task<TaskEntity> CreateTask(TaskDto taskDto);
+        Task<TaskEntity> UpdateTask(TaskDto taskDto);
         bool DeleteTask(int id);
+        IEnumerable<TaskEntity> GetAllTasks();
     }
 }

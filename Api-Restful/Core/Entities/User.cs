@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace Api_Restful.Core.Entities;
 public class User
 {
     [Key]

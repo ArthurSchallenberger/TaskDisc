@@ -1,6 +1,6 @@
 ﻿using Api_Restful.Application.Interfaces;
+using Api_Restful.Core.Entities;
 using Api_Restful.Presentation.Dto;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Api_Restful.Application.Services
 {
@@ -12,6 +12,23 @@ namespace Api_Restful.Application.Services
         {
             _taskUserRepository = taskUserRepository;
         }
+
+        public async Task<TaskUser> CreateTaskUser(TaskUserDto taskUserDto)
+        {
+            var taskUser = new TaskUser
+            {
+                ID_Task = taskUserDto.ID_Task,
+                ID_User = taskUserDto.ID_User
+            };
+            var createdTaskUser = _taskUserRepository.Add(taskUser);
+            return createdTaskUser;
+        }
+
+        public bool DeleteTaskUser(int id)
+        {
+            return _taskUserRepository.Delete(id);
+        }
+
 
         public async Task<TaskUserDto> GetByTaskId(int taskId)
         {
@@ -38,12 +55,18 @@ namespace Api_Restful.Application.Services
             return returnDto;
         }
 
-        public async Task<TaskUser> GetByUserId(int id)
+        public async Task<TaskUser> Update(TaskUserDto taskUser)
         {
-            throw new NotImplementedException();
+            var updatedTaskUser = new TaskUser
+            {
+                ID_Task = taskUser.ID_Task,
+                ID_User = taskUser.ID_User
+            };
+
+            return _taskUserRepository.Update(updatedTaskUser);
         }
 
-        public async Task<TaskUser>Update(TaskUser taskUser)
+        Task<TaskUser> ITaskUserService.GetByUserId(int id)
         {
             throw new NotImplementedException();
         }

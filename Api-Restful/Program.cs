@@ -1,6 +1,5 @@
 using Api_Restful.Application.Interfaces;
 using Api_Restful.Application.Services;
-using Api_Restful.Core.UseCases;
 using Api_Restful.Infrastructure.Repositories;
 using Api_Restful.Infrastructure.Services;
 using Discord.Commands;
@@ -8,10 +7,9 @@ using Discord.WebSocket;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Text.Json.Serialization;
+using Api_Restful.Infrastructure.Migrations;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -25,8 +23,8 @@ builder.Services.AddScoped<ITaskUserService, TaskUserManagementService>();
 builder.Services.AddScoped<ITaskUserRepository, TaskUserRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<ITaskService, TaskManagementService>();
-builder.Services.AddScoped<IUserService, UserManagementService>(); 
-builder.Services.AddScoped<IUserRepository, UserRepository>();   
+builder.Services.AddScoped<IUserService, UserManagementService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
@@ -39,15 +37,13 @@ builder.Services.AddAuthentication("Bearer")
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"])),
-            ClockSkew = TimeSpan.Zero 
+            ClockSkew = TimeSpan.Zero
         };
     });
-
 
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
-
 
 if (app.Environment.IsDevelopment())
 {
@@ -56,9 +52,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthentication(); 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<DatabaseContext>();
+    DbInitializer.Initialize(context);
+}
 
 app.Run();

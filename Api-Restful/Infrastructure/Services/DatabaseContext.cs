@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Api_Restful.Core.Entities;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
@@ -6,7 +7,7 @@ public class DatabaseContext : DbContext
 {
     public DbSet<User> Users { get; set; }
     public DbSet<TaskUser> TaskUsers { get; set; }
-    public DbSet<Task> Tasks { get; set; }
+    public DbSet<TaskEntity> Tasks { get; set; }
     public DbSet<JobTitles> JobTitles { get; set; }
     public DbSet<Token> Tokens { get; set; }
 
@@ -33,7 +34,7 @@ public class DatabaseContext : DbContext
             .WithOne(ut => ut.User)
             .HasForeignKey(ut => ut.ID_User);
 
-        modelBuilder.Entity<Task>()
+        modelBuilder.Entity<TaskEntity>()
             .HasMany(t => t.TaskUsers)
             .WithOne(ut => ut.Task)
             .HasForeignKey(ut => ut.ID_Task);

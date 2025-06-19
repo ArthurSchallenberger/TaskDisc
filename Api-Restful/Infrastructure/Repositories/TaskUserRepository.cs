@@ -1,4 +1,5 @@
 ﻿using Api_Restful.Application.Interfaces;
+using Api_Restful.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api_Restful.Infrastructure.Repositories

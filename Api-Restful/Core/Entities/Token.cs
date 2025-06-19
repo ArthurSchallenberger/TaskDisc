@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+namespace Api_Restful.Core.Entities;
 public class Token
 {
     [Key]

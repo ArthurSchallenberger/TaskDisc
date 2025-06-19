@@ -1,4 +1,5 @@
 ﻿using Api_Restful.Application.Interfaces;
+using Api_Restful.Core.Entities;
 using Api_Restful.Presentation.Dto;
 
 namespace Api_Restful.Application.Services
@@ -21,7 +22,7 @@ namespace Api_Restful.Application.Services
             if (string.IsNullOrEmpty(userDto.Password)) throw new ArgumentException("Senha é obrigatória.", nameof(userDto.Password));
             if (userDto.ID_JobTitle <= 0) throw new ArgumentException("ID do cargo é obrigatório.", nameof(userDto.ID_JobTitle));
 
-          
+
             if (!userDto.Email.Contains("@")) throw new ArgumentException("Email inválido.", nameof(userDto.Email));
 
             var user = new User
@@ -41,10 +42,10 @@ namespace Api_Restful.Application.Services
         {
             var user = _userRepository.GetById(id);
             if (user == null) return false;
-            return _userRepository.Delete(id); 
+            return _userRepository.Delete(id);
         }
 
-        public async  Task<UserDto> GetUserById(int id)
+        public async Task<UserDto> GetUserById(int id)
         {
             _userRepository.GetById(id);
             var user = _userRepository.GetById(id);
@@ -75,13 +76,34 @@ namespace Api_Restful.Application.Services
             var existingUser = _userRepository.GetById(userDto.ID_PK);
             if (existingUser == null) throw new InvalidOperationException("Usuário não encontrado.");
 
-           
+
             existingUser.Name = string.IsNullOrEmpty(userDto.Name) ? existingUser.Name : userDto.Name;
             existingUser.Email = string.IsNullOrEmpty(userDto.Email) ? existingUser.Email : userDto.Email;
             existingUser.Password = string.IsNullOrEmpty(userDto.Password) ? existingUser.Password : userDto.Password;
             existingUser.ID_JobTitle = (int)(userDto.ID_JobTitle > 0 ? userDto.ID_JobTitle : existingUser.ID_JobTitle);
 
             return _userRepository.Update(existingUser);
+        }
+
+        public async Task<IEnumerable<UserDto>> GetAllUsers()
+        {
+            var users = _userRepository.GetAll();
+            if (users == null || !users.Any())
+            {
+                throw new InvalidOperationException("No users found.");
+            }
+
+            var userDtos = users.Select(u => new UserDto
+            {
+                ID_PK = u.ID_PK,
+                Name = u.Name,
+                Email = u.Email,
+                Password = u.Password,
+                ID_JobTitle = u.ID_JobTitle,
+                ID_Token = u.ID_Token
+            }).ToList();
+
+            return userDtos;
         }
     }
 }

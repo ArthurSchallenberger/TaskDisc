@@ -1,6 +1,7 @@
 ﻿using Api_Restful.Application.Interfaces;
 using Api_Restful.Presentation.Dto;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Api_Restful.Core.Entities;
+
 
 namespace Api_Restful.Application.Services
 {
@@ -13,7 +14,7 @@ namespace Api_Restful.Application.Services
             _taskRepository = taskRepository;
         }
 
-        public async Task<Task> CreateTask(TaskDto taskDto)
+        public async Task<TaskEntity> CreateTask(TaskDto taskDto)
         {
             if (taskDto == null)
             {
@@ -25,7 +26,7 @@ namespace Api_Restful.Application.Services
                 throw new ArgumentException("Description is mandatory.", nameof(taskDto.Description));
             }
 
-            var task = new Task
+            var task = new TaskEntity
             {
                 ID_PK = taskDto.ID_PK,
                 Description = taskDto.Description,
@@ -39,13 +40,13 @@ namespace Api_Restful.Application.Services
             return _taskRepository.Add(task);
         }
 
-        public Task GetTaskById(int id)
+        public TaskEntity GetTaskById(int id)
         {
             return _taskRepository.GetById(id);
         }
 
 
-        public async Task<Task> UpdateTask(TaskDto taskDto)
+        public async Task<TaskEntity> UpdateTask(TaskDto taskDto)
         {
             if (taskDto == null) throw new ArgumentNullException(nameof(taskDto), "Task data cannot be null.");
             var existingTask = _taskRepository.GetById(taskDto.ID_PK);
@@ -60,16 +61,16 @@ namespace Api_Restful.Application.Services
             return _taskRepository.Update(existingTask);
         }
 
+        public IEnumerable<TaskEntity> GetAllTasks()
+        {
+            return _taskRepository.GetAll();
+        }
+
         public bool DeleteTask(int id)
         {
             var task = _taskRepository.GetById(id);
             if (task == null) return false;
             return _taskRepository.Delete(id); 
-        }
-
-        public List<Task> GetTasksByUserId(int userId)
-        {
-            throw new NotImplementedException();
         }
     }
 }

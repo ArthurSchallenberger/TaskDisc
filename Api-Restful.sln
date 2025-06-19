@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api-Restful", "Api-Restful\
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ModalDiscord", "ModalDiscord\ModalDiscord.esproj", "{F78FDCAB-1133-0BDA-3A98-8A3970FA48CB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testes", "Testes\Testes.csproj", "{21A7034F-8F5E-4A07-B8A9-DDBB886D66FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{F78FDCAB-1133-0BDA-3A98-8A3970FA48CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F78FDCAB-1133-0BDA-3A98-8A3970FA48CB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F78FDCAB-1133-0BDA-3A98-8A3970FA48CB}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{21A7034F-8F5E-4A07-B8A9-DDBB886D66FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21A7034F-8F5E-4A07-B8A9-DDBB886D66FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21A7034F-8F5E-4A07-B8A9-DDBB886D66FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21A7034F-8F5E-4A07-B8A9-DDBB886D66FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
