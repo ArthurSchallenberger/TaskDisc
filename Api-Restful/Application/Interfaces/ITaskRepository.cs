@@ -1,14 +1,13 @@
-﻿
-using Api_Restful.Core.Entities;
+﻿using Api_Restful.Core.Entities;
 
 namespace Api_Restful.Application.Interfaces
 {
     public interface ITaskRepository
     {
-        TaskEntity Add(TaskEntity task);
-        TaskEntity GetById(int id);
-        TaskEntity Update(TaskEntity task);
-        bool Delete(int id);
-        IEnumerable<TaskEntity> GetAll();
+        Task<TaskEntity> Add(TaskEntity task);
+        Task<TaskEntity> GetById(int id);
+        Task<TaskEntity> Update(TaskEntity task);
+        Task<bool> Delete(int id);
+        Task<IEnumerable<TaskEntity>> GetAll();
     }
 }

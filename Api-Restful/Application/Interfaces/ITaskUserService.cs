@@ -5,10 +5,10 @@ namespace Api_Restful.Application.Interfaces
 {
     public interface ITaskUserService
     {
-        Task<TaskUser> GetByUserId(int id);
+        Task<TaskUserEntity> GetByUserId(int id);
         Task<TaskUserDto> GetByTaskId(int taskId);
-        Task<TaskUser> Update(TaskUserDto taskUser);
-        Task<TaskUser> CreateTaskUser(TaskUserDto taskUserDto);
+        Task<TaskUserEntity> Update(TaskUserDto taskUser);
+        Task<TaskUserEntity> CreateTaskUser(TaskUserDto taskUserDto);
         bool DeleteTaskUser(int id);
     }
 }

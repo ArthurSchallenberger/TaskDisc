@@ -4,12 +4,12 @@ namespace Api_Restful.Application.Interfaces
 {
     public interface IUserRepository
     {
-        User Add(User user);
-        User GetById(int id);
-        List<User> GetByCargoId(int cargoId);
-        User Update(User user);
+        UserEntity Add(UserEntity user);
+        UserEntity GetById(int id);
+        List<UserEntity> GetByCargoId(int cargoId);
+        UserEntity Update(UserEntity user);
         bool Delete(int id);
 
-        IEnumerable<User> GetAll();
+        IEnumerable<UserEntity> GetAll();
     }
 }

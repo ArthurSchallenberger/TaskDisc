@@ -5,10 +5,10 @@ namespace Api_Restful.Application.Interfaces
 {
     public interface IUserService
     {
-        Task<User> CreateUser(UserDto userDto);
+        Task<UserEntity> CreateUser(UserDto userDto);
         Task<UserDto> GetUserById(int id);
-        List<User> GetUsersByCargoId(int cargoId);
-        Task<User> UpdateUser(UserDto userDto);
+        List<UserEntity> GetUsersByCargoId(int cargoId);
+        Task<UserEntity> UpdateUser(UserDto userDto);
         bool DeleteUser(int id);
 
         Task<IEnumerable<UserDto>> GetAllUsers();

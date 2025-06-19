@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Api_Restful.Core.Entities;
 
 public class TaskEntity
 {
     [Key]
-    public int ID_PK { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
     public DateTime Creation_Date { get; set; }
     public DateTime? Completion_Date { get; set; }
     public string Description { get; set; }
@@ -13,5 +15,5 @@ public class TaskEntity
     public string Subject { get; set; }
     public string Status { get; set; }
 
-    public ICollection<TaskUser> TaskUsers { get; set; }
+    public ICollection<TaskUserEntity> TaskUsers { get; set; }
 }
