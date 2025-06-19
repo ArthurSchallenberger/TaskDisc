@@ -1,6 +1,6 @@
 ﻿using Api_Restful.Application.Interfaces;
-using Api_Restful.Core.Entities;
 using Api_Restful.Presentation.Controllers;
+using Api_Restful.Presentation.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
@@ -20,13 +20,14 @@ namespace Testes.UnitTests
         [Fact]
         public async Task GetAll_ReturnsOkResult()
         {
-            var tasks = new List<TaskEntity> { new TaskEntity { ID_PK = 1, Subject = "Test Task" } };
-            _mockService.Setup(s => s.GetAllTasks()).Returns(tasks);
+            var tasks = new List<TaskDto> { new TaskDto { ID_PK = 1, Subject = "Test Task" } };
 
+            _mockService.Setup(s => s.GetAllTasks()).ReturnsAsync(tasks);
             var result = await _controller.GetAll();
 
             var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<List<TaskEntity>>(okResult.Value);
+
+            var returnValue = Assert.IsType<List<TaskDto>>(okResult.Value);
             Assert.Single(returnValue);
             Assert.Equal("Test Task", returnValue[0].Subject);
         }

@@ -31,7 +31,7 @@ namespace Api_Restful.Testes.IntegrationTests
         public void Initialize_ShouldNotPopulateDatabase_WhenDatabaseIsNotEmpty()
         {
             using var context = TestDatabaseContext.Create();
-            context.JobTitles.Add(new JobTitles { ID_PK = 1, Name = "Existing", Abbreviation = "EXT" });
+            context.JobTitles.Add(new JobTitlesEntity { Id = 1, Name = "Existing", Abbreviation = "EXT" });
             context.SaveChanges();
             var initialCount = context.JobTitles.Count();
 
