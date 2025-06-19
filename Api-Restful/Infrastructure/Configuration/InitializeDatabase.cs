@@ -2,7 +2,7 @@
 
 namespace Api_Restful.Infrastructure.Configuration
 {
-    public static class DatabaseInitializer // Renamed the class to avoid conflict with the method name
+    public static class DatabaseInitializer
     {
         public static void Initialize(WebApplication app)
         {

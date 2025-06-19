@@ -1,7 +1,6 @@
 using Api_Restful.Application.Mappings;
 using Api_Restful.Infrastructure;
 using Api_Restful.Infrastructure.Configuration;
-using Api_Restful.Infrastructure.Migrations;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.EntityFrameworkCore;
