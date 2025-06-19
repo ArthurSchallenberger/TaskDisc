@@ -50,7 +50,7 @@ namespace Api_Restful.Presentation.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var tasks = _taskService.GetAllTasks();
+            var tasks = await _taskService.GetAllTasks();
 
             if (tasks is null)
             {
@@ -63,7 +63,7 @@ namespace Api_Restful.Presentation.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var task = _taskService.GetTaskById(id);
+            var task = await _taskService.GetTaskById(id);
             if (task is null)
             {
                 return NotFound($"Task with ID {id} not found.");

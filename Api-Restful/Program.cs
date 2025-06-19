@@ -1,9 +1,7 @@
-using Api_Restful.Application.Interfaces;
 using Api_Restful.Application.Mappings;
-using Api_Restful.Application.Services;
+using Api_Restful.Infrastructure;
+using Api_Restful.Infrastructure.Configuration;
 using Api_Restful.Infrastructure.Migrations;
-using Api_Restful.Infrastructure.Repositories;
-using Api_Restful.Infrastructure.Services;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.EntityFrameworkCore;
@@ -16,17 +14,17 @@ builder.Services.AddControllers();
 builder.Services.AddCustomMappings();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+#region Discord Bot Configuration
 builder.Services.AddHostedService<DiscordBotService>();
 builder.Services.AddSingleton<DiscordSocketClient>();
 builder.Services.AddSingleton<CommandService>();
+#endregion
+
+#region Database Configuration
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddScoped<IAuthenticationService, JwtAuthenticationService>();
-builder.Services.AddScoped<ITaskUserService, TaskUserManagementService>();
-builder.Services.AddScoped<ITaskUserRepository, TaskUserRepository>();
-builder.Services.AddScoped<ITaskRepository, TaskRepository>();
-builder.Services.AddScoped<ITaskService, TaskManagementService>();
-builder.Services.AddScoped<IUserService, UserManagementService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+DependencyInjection.AddApplicationServices(builder.Services);
+#endregion
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
@@ -47,23 +45,20 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+DatabaseInitializer.Initialize(app);
+
+#region Swagger and Middleware Configuration
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+#endregion
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<DatabaseContext>();
-    DbInitializer.Initialize(context);
-}
 
 app.Run();
