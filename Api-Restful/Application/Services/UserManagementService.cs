@@ -14,7 +14,7 @@ namespace Api_Restful.Application.Services
             _userRepository = userRepository;
         }
 
-        public async Task<User> CreateUser(UserDto userDto)
+        public async Task<UserEntity> CreateUser(UserDto userDto)
         {
             if (userDto == null) throw new ArgumentNullException(nameof(userDto), "User data cannot be null.");
             if (string.IsNullOrEmpty(userDto.Name)) throw new ArgumentException("Nome é obrigatório.", nameof(userDto.Name));
@@ -25,9 +25,9 @@ namespace Api_Restful.Application.Services
 
             if (!userDto.Email.Contains("@")) throw new ArgumentException("Email inválido.", nameof(userDto.Email));
 
-            var user = new User
+            var user = new UserEntity
             {
-                ID_PK = userDto.ID_PK,
+                Id = userDto.ID_PK,
                 Name = userDto.Name,
                 Password = userDto.Password,
                 Email = userDto.Email,
@@ -53,7 +53,7 @@ namespace Api_Restful.Application.Services
 
             var userDto = new UserDto
             {
-                ID_PK = user.ID_PK,
+                ID_PK = user.Id,
                 Name = user.Name,
                 Email = user.Email,
                 Password = user.Password,
@@ -64,12 +64,12 @@ namespace Api_Restful.Application.Services
             return userDto;
         }
 
-        public List<User> GetUsersByCargoId(int cargoId)
+        public List<UserEntity> GetUsersByCargoId(int cargoId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<User> UpdateUser(UserDto userDto)
+        public async Task<UserEntity> UpdateUser(UserDto userDto)
         {
             if (userDto == null) throw new ArgumentNullException(nameof(userDto), "User data cannot be null.");
             if (userDto.ID_PK <= 0) throw new ArgumentException("ID do usuário é obrigatório.", nameof(userDto.ID_PK));
@@ -95,7 +95,7 @@ namespace Api_Restful.Application.Services
 
             var userDtos = users.Select(u => new UserDto
             {
-                ID_PK = u.ID_PK,
+                ID_PK = u.Id,
                 Name = u.Name,
                 Email = u.Email,
                 Password = u.Password,

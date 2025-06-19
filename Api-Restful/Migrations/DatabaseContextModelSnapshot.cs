@@ -21,13 +21,13 @@ namespace Api_Restful.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("JobTitles", b =>
+            modelBuilder.Entity("Api_Restful.Core.Entities.JobTitles", b =>
                 {
-                    b.Property<int>("ID_PK")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID_PK"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Abbreviation")
                         .IsRequired()
@@ -37,18 +37,18 @@ namespace Api_Restful.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("ID_PK");
+                    b.HasKey("Id");
 
                     b.ToTable("JobTitles");
                 });
 
-            modelBuilder.Entity("Task", b =>
+            modelBuilder.Entity("Api_Restful.Core.Entities.TaskEntity", b =>
                 {
-                    b.Property<int>("ID_PK")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID_PK"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("Completion_Date")
                         .HasColumnType("timestamp with time zone");
@@ -71,33 +71,33 @@ namespace Api_Restful.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("ID_PK");
+                    b.HasKey("Id");
 
                     b.ToTable("Tasks");
                 });
 
-            modelBuilder.Entity("TaskUser", b =>
+            modelBuilder.Entity("Api_Restful.Core.Entities.TaskUser", b =>
                 {
-                    b.Property<int>("ID_User")
+                    b.Property<int>("Id_User")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ID_Task")
+                    b.Property<int>("Id_Task")
                         .HasColumnType("integer");
 
-                    b.HasKey("ID_User", "ID_Task");
+                    b.HasKey("Id_User", "Id_Task");
 
-                    b.HasIndex("ID_Task");
+                    b.HasIndex("Id_Task");
 
                     b.ToTable("TaskUsers");
                 });
 
-            modelBuilder.Entity("Token", b =>
+            modelBuilder.Entity("Api_Restful.Core.Entities.Token", b =>
                 {
-                    b.Property<int>("ID_PK")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID_PK"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Creation_Date")
                         .HasColumnType("timestamp with time zone");
@@ -105,20 +105,20 @@ namespace Api_Restful.Migrations
                     b.Property<int>("ID_User")
                         .HasColumnType("integer");
 
-                    b.HasKey("ID_PK");
+                    b.HasKey("Id");
 
                     b.HasIndex("ID_User");
 
                     b.ToTable("Tokens");
                 });
 
-            modelBuilder.Entity("User", b =>
+            modelBuilder.Entity("Api_Restful.Core.Entities.User", b =>
                 {
-                    b.Property<int>("ID_PK")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID_PK"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -138,24 +138,24 @@ namespace Api_Restful.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("ID_PK");
+                    b.HasKey("Id");
 
                     b.HasIndex("ID_JobTitle");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("TaskUser", b =>
+            modelBuilder.Entity("Api_Restful.Core.Entities.TaskUser", b =>
                 {
-                    b.HasOne("Task", "Task")
+                    b.HasOne("Api_Restful.Core.Entities.TaskEntity", "Task")
                         .WithMany("TaskUsers")
-                        .HasForeignKey("ID_Task")
+                        .HasForeignKey("Id_Task")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("User", "User")
+                    b.HasOne("Api_Restful.Core.Entities.User", "User")
                         .WithMany("TaskUsers")
-                        .HasForeignKey("ID_User")
+                        .HasForeignKey("Id_User")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -164,9 +164,9 @@ namespace Api_Restful.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Token", b =>
+            modelBuilder.Entity("Api_Restful.Core.Entities.Token", b =>
                 {
-                    b.HasOne("User", "User")
+                    b.HasOne("Api_Restful.Core.Entities.User", "User")
                         .WithMany("Tokens")
                         .HasForeignKey("ID_User")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -175,9 +175,9 @@ namespace Api_Restful.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("User", b =>
+            modelBuilder.Entity("Api_Restful.Core.Entities.User", b =>
                 {
-                    b.HasOne("JobTitles", "JobTitle")
+                    b.HasOne("Api_Restful.Core.Entities.JobTitles", "JobTitle")
                         .WithMany("User")
                         .HasForeignKey("ID_JobTitle")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -186,17 +186,17 @@ namespace Api_Restful.Migrations
                     b.Navigation("JobTitle");
                 });
 
-            modelBuilder.Entity("JobTitles", b =>
+            modelBuilder.Entity("Api_Restful.Core.Entities.JobTitles", b =>
                 {
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Task", b =>
+            modelBuilder.Entity("Api_Restful.Core.Entities.TaskEntity", b =>
                 {
                     b.Navigation("TaskUsers");
                 });
 
-            modelBuilder.Entity("User", b =>
+            modelBuilder.Entity("Api_Restful.Core.Entities.User", b =>
                 {
                     b.Navigation("TaskUsers");
 

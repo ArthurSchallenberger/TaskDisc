@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api_Restful.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class _001 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,21 +16,21 @@ namespace Api_Restful.Migrations
                 name: "JobTitles",
                 columns: table => new
                 {
-                    ID_PK = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Abbreviation = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobTitles", x => x.ID_PK);
+                    table.PrimaryKey("PK_JobTitles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Tasks",
                 columns: table => new
                 {
-                    ID_PK = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Creation_Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Completion_Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -41,14 +41,14 @@ namespace Api_Restful.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tasks", x => x.ID_PK);
+                    table.PrimaryKey("PK_Tasks", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    ID_PK = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Password = table.Column<string>(type: "text", nullable: false),
@@ -58,12 +58,12 @@ namespace Api_Restful.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.ID_PK);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Users_JobTitles_ID_JobTitle",
                         column: x => x.ID_JobTitle,
                         principalTable: "JobTitles",
-                        principalColumn: "ID_PK",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -71,23 +71,23 @@ namespace Api_Restful.Migrations
                 name: "TaskUsers",
                 columns: table => new
                 {
-                    ID_User = table.Column<int>(type: "integer", nullable: false),
-                    ID_Task = table.Column<int>(type: "integer", nullable: false)
+                    Id_User = table.Column<int>(type: "integer", nullable: false),
+                    Id_Task = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TaskUsers", x => new { x.ID_User, x.ID_Task });
+                    table.PrimaryKey("PK_TaskUsers", x => new { x.Id_User, x.Id_Task });
                     table.ForeignKey(
-                        name: "FK_TaskUsers_Tasks_ID_Task",
-                        column: x => x.ID_Task,
+                        name: "FK_TaskUsers_Tasks_Id_Task",
+                        column: x => x.Id_Task,
                         principalTable: "Tasks",
-                        principalColumn: "ID_PK",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TaskUsers_Users_ID_User",
-                        column: x => x.ID_User,
+                        name: "FK_TaskUsers_Users_Id_User",
+                        column: x => x.Id_User,
                         principalTable: "Users",
-                        principalColumn: "ID_PK",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -95,26 +95,26 @@ namespace Api_Restful.Migrations
                 name: "Tokens",
                 columns: table => new
                 {
-                    ID_PK = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Creation_Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ID_User = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tokens", x => x.ID_PK);
+                    table.PrimaryKey("PK_Tokens", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Tokens_Users_ID_User",
                         column: x => x.ID_User,
                         principalTable: "Users",
-                        principalColumn: "ID_PK",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TaskUsers_ID_Task",
+                name: "IX_TaskUsers_Id_Task",
                 table: "TaskUsers",
-                column: "ID_Task");
+                column: "Id_Task");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tokens_ID_User",

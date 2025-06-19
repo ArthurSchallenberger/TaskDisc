@@ -1,76 +1,82 @@
 ﻿using Api_Restful.Application.Interfaces;
 using Api_Restful.Presentation.Dto;
 using Api_Restful.Core.Entities;
-
+using AutoMapper;
 
 namespace Api_Restful.Application.Services
 {
     public class TaskManagementService : ITaskService
     {
         private readonly ITaskRepository _taskRepository;
+        private readonly IMapper _mapper;
 
-        public TaskManagementService(ITaskRepository taskRepository)
+        public TaskManagementService(
+            ITaskRepository taskRepository,
+            IMapper mapper
+        )
         {
             _taskRepository = taskRepository;
+            _mapper = mapper;
         }
 
         public async Task<TaskEntity> CreateTask(TaskDto taskDto)
         {
-            if (taskDto == null)
+            if (taskDto is null)
             {
                 throw new ArgumentNullException(nameof(taskDto), "Task data cannot be null.");
             }
 
-            if (string.IsNullOrEmpty(taskDto.Description))
+            var task = _mapper.Map<TaskEntity>(taskDto);
+
+            return await _taskRepository.Add(task);
+        }
+
+        public async Task<TaskDto> GetTaskById(int id)
+        {
+            var taskQuery = await _taskRepository.GetById(id);
+
+            if (taskQuery is null)
             {
-                throw new ArgumentException("Description is mandatory.", nameof(taskDto.Description));
+                throw new KeyNotFoundException($"Task with ID {id} not found.");
             }
 
-            var task = new TaskEntity
+            return _mapper.Map<TaskDto>(taskQuery);
+        }
+
+        public async Task<TaskDto> UpdateTask(TaskDto taskDto)
+        {
+            if (taskDto is null)
             {
-                ID_PK = taskDto.ID_PK,
-                Description = taskDto.Description,
-                Status = taskDto.Status,
-                Creation_Date = DateTime.UtcNow,
-                Priority = taskDto.Priority ?? 0,
-                Subject = taskDto.Subject ?? "Sem Assunto",
-              
-            };
+                throw new ArgumentNullException(nameof(taskDto), "Task data cannot be null.");
+            }
 
-            return _taskRepository.Add(task);
+            var existingTask = await _taskRepository.GetById(taskDto.ID_PK);
+
+            if (existingTask is null)
+            {
+                throw new KeyNotFoundException($"Task with ID {taskDto.ID_PK} not found.");
+            }
+
+            _mapper.Map(taskDto, existingTask);
+
+            var updatedTask = await _taskRepository.Update(existingTask);
+
+            return _mapper.Map<TaskDto>(updatedTask);
         }
 
-        public TaskEntity GetTaskById(int id)
+        public async Task<IEnumerable<TaskDto>> GetAllTasks()
         {
-            return _taskRepository.GetById(id);
+            var tasks = await _taskRepository.GetAll();
+
+            return _mapper.Map<IEnumerable<TaskDto>>(tasks);
         }
 
-
-        public async Task<TaskEntity> UpdateTask(TaskDto taskDto)
+        public async Task<bool> DeleteTask(int id)
         {
-            if (taskDto == null) throw new ArgumentNullException(nameof(taskDto), "Task data cannot be null.");
-            var existingTask = _taskRepository.GetById(taskDto.ID_PK);
-            if (existingTask == null) throw new InvalidOperationException("Task not found.");
-
-            
-            existingTask.Subject = taskDto.Subject ?? existingTask.Subject;
-            existingTask.Description = taskDto.Description ?? existingTask.Description;
-            existingTask.Status = taskDto.Status ?? existingTask.Status;
-            existingTask.Priority = (int)(taskDto.Priority != 0 ? taskDto.Priority : existingTask.Priority);
-
-            return _taskRepository.Update(existingTask);
-        }
-
-        public IEnumerable<TaskEntity> GetAllTasks()
-        {
-            return _taskRepository.GetAll();
-        }
-
-        public bool DeleteTask(int id)
-        {
-            var task = _taskRepository.GetById(id);
+            var task = await _taskRepository.GetById(id);
             if (task == null) return false;
-            return _taskRepository.Delete(id); 
+
+            return await _taskRepository.Delete(id);
         }
     }
 }

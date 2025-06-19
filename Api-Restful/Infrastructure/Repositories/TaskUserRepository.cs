@@ -13,9 +13,9 @@ namespace Api_Restful.Infrastructure.Repositories
             _context = context;
         }
 
-        public TaskUser Add(TaskUser taskUser)
+        public TaskUserEntity Add(TaskUserEntity taskUser)
         {
-            var user = _context.Users.Find(taskUser.ID_User);
+            var user = _context.Users.Find(taskUser.Id_User);
             if (user == null)
                 throw new ArgumentException("User with the specified ID_Usuario does not exist.");
             _context.TaskUsers.Add(taskUser);
@@ -23,25 +23,25 @@ namespace Api_Restful.Infrastructure.Repositories
             return taskUser;
         }
 
-        public TaskUser GetByUserId(int id)
+        public TaskUserEntity GetByUserId(int id)
         {
             return _context.TaskUsers
                 .Include(t => t.User)
                 .Include(t => t.Task)
-                .FirstOrDefault(t => t.ID_User == id);
+                .FirstOrDefault(t => t.Id_User == id);
         }
 
-        public TaskUser GetByTaskId(int taskId)
+        public TaskUserEntity GetByTaskId(int taskId)
         {
             return _context.TaskUsers
                 .Include(t => t.User)
                 .Include(t => t.Task)
-                .FirstOrDefault(t => t.ID_Task == taskId);
+                .FirstOrDefault(t => t.Id_Task == taskId);
         }
 
-        public TaskUser Update(TaskUser taskUser)
+        public TaskUserEntity Update(TaskUserEntity taskUser)
         {
-            var user = _context.Users.Find(taskUser.ID_User);
+            var user = _context.Users.Find(taskUser.Id_User);
             if (user == null)
                 throw new ArgumentException("User with the specified ID_Usuario does not exist.");
 

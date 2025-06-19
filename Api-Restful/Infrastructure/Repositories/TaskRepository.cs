@@ -1,5 +1,6 @@
 ﻿using Api_Restful.Application.Interfaces;
 using Api_Restful.Core.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api_Restful.Infrastructure.Repositories
 {
@@ -12,39 +13,39 @@ namespace Api_Restful.Infrastructure.Repositories
             _context = context;
         }
 
-        public TaskEntity Add(TaskEntity task)
+        public async Task<TaskEntity> Add(TaskEntity task)
         {
-            _context.Tasks.Add(task);
-            _context.SaveChanges();
+            await _context.Tasks.AddAsync(task);
+            await _context.SaveChangesAsync();
             return task;
         }
 
-        public TaskEntity Update(TaskEntity task)
+        public async Task<TaskEntity> Update(TaskEntity task)
         {
             _context.Tasks.Update(task);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return task;
         }
 
-        public bool Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            var task = _context.Tasks.Find(id);
+            var task = await _context.Tasks.FindAsync(id);
             if (task == null) return false;
+
             _context.Tasks.Remove(task);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
 
-
         #region Gets
-        public IEnumerable<TaskEntity> GetAll()
+        public async Task<IEnumerable<TaskEntity>> GetAll()
         {
-            return _context.Tasks.ToList();
+            return await _context.Tasks.ToListAsync();
         }
 
-        public TaskEntity GetById(int id)
+        public async Task<TaskEntity?> GetById(int id)
         {
-            return _context.Tasks.Find(id);
+            return await _context.Tasks.FindAsync(id);
         }
         #endregion
     }

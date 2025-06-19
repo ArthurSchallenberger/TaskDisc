@@ -13,24 +13,24 @@ namespace Api_Restful.Infrastructure.Repositories
             _context = context;
         }
 
-        public User Add(User user)
+        public UserEntity Add(UserEntity user)
         {
             _context.Users.Add(user);
             _context.SaveChanges();
             return user;
         }
 
-        public User GetById(int id)
+        public UserEntity GetById(int id)
         {
-            return _context.Users.Include(u => u.JobTitle).FirstOrDefault(u => u.ID_PK == id);
+            return _context.Users.Include(u => u.JobTitle).FirstOrDefault(u => u.Id == id);
         }
 
-        public List<User> GetByCargoId(int cargoId)
+        public List<UserEntity> GetByCargoId(int cargoId)
         {
             return _context.Users.Include(u => u.JobTitle).Where(u => u.ID_JobTitle == cargoId).ToList();
         }
 
-        public User Update(User user)
+        public UserEntity Update(UserEntity user)
         {
             _context.Users.Update(user);
             _context.SaveChanges();
@@ -39,14 +39,14 @@ namespace Api_Restful.Infrastructure.Repositories
 
         public bool Delete(int id)
         {
-            var user = _context.Users.FirstOrDefault(u => u.ID_PK == id);
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
             if (user == null) return false;
             _context.Users.Remove(user);
             _context.SaveChanges();
             return true;
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<UserEntity> GetAll()
         {
             return _context.Users.Include(u => u.JobTitle).ToList();
         }

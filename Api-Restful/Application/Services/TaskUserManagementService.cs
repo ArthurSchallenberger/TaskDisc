@@ -13,12 +13,12 @@ namespace Api_Restful.Application.Services
             _taskUserRepository = taskUserRepository;
         }
 
-        public async Task<TaskUser> CreateTaskUser(TaskUserDto taskUserDto)
+        public async Task<TaskUserEntity> CreateTaskUser(TaskUserDto taskUserDto)
         {
-            var taskUser = new TaskUser
+            var taskUser = new TaskUserEntity
             {
-                ID_Task = taskUserDto.ID_Task,
-                ID_User = taskUserDto.ID_User
+                Id_Task = taskUserDto.ID_Task,
+                Id_User = taskUserDto.ID_User
             };
             var createdTaskUser = _taskUserRepository.Add(taskUser);
             return createdTaskUser;
@@ -35,17 +35,17 @@ namespace Api_Restful.Application.Services
             var query = _taskUserRepository.GetByTaskId(taskId);
             var returnDto = new TaskUserDto
             {
-                ID_Task = query.ID_Task,
-                ID_User = query.ID_User,
+                ID_Task = query.Id_Task,
+                ID_User = query.Id_User,
                 Task = new TaskDto
                 {
-                    ID_PK = query.Task.ID_PK, 
+                    ID_PK = query.Task.Id, 
                     Description = query.Task.Description, 
                     Status = query.Task.Status
                 },
                 User = new UserDto 
                 {
-                    ID_PK = query.User.ID_PK, 
+                    ID_PK = query.User.Id, 
                     Name = query.User.Name, 
                     Email = query.User.Email
                 } 
@@ -55,18 +55,18 @@ namespace Api_Restful.Application.Services
             return returnDto;
         }
 
-        public async Task<TaskUser> Update(TaskUserDto taskUser)
+        public async Task<TaskUserEntity> Update(TaskUserDto taskUser)
         {
-            var updatedTaskUser = new TaskUser
+            var updatedTaskUser = new TaskUserEntity
             {
-                ID_Task = taskUser.ID_Task,
-                ID_User = taskUser.ID_User
+                Id_Task = taskUser.ID_Task,
+                Id_User = taskUser.ID_User
             };
 
             return _taskUserRepository.Update(updatedTaskUser);
         }
 
-        Task<TaskUser> ITaskUserService.GetByUserId(int id)
+        Task<TaskUserEntity> ITaskUserService.GetByUserId(int id)
         {
             throw new NotImplementedException();
         }

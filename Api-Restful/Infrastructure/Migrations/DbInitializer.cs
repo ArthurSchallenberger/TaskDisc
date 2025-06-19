@@ -20,9 +20,9 @@ namespace Api_Restful.Infrastructure.Migrations
             // JobTitles
             var jobTitles = new[]
             {
-                new JobTitles { Name = "Desenvolvedor", Abbreviation = "DEV" },
-                new JobTitles { Name = "Analista", Abbreviation = "ANL" },
-                new JobTitles { Name = "Gerente", Abbreviation = "GER" },
+                new JobTitlesEntity { Name = "Desenvolvedor", Abbreviation = "DEV" },
+                new JobTitlesEntity { Name = "Analista", Abbreviation = "ANL" },
+                new JobTitlesEntity { Name = "Gerente", Abbreviation = "GER" },
             };
             context.JobTitles.AddRange(jobTitles);
             context.SaveChanges();
@@ -61,26 +61,26 @@ namespace Api_Restful.Infrastructure.Migrations
             // Users
             var users = new[]
             {
-                new User
+                new UserEntity
                 {
                     Name = "Alice",
                     Email = "alice@email.com",
                     Password = "Senha123!",
-                    ID_JobTitle = jobTitles[0].ID_PK
+                    ID_JobTitle = jobTitles[0].Id
                 },
-                new User
+                new UserEntity
                 {
                     Name = "Bob",
                     Email = "bob@email.com",
                     Password = "Senha123!",
-                    ID_JobTitle = jobTitles[1].ID_PK
+                    ID_JobTitle = jobTitles[1].Id
                 },
-                new User
+                new UserEntity
                 {
                     Name = "Carol",
                     Email = "carol@email.com",
                     Password = "Senha123!",
-                    ID_JobTitle = jobTitles[2].ID_PK
+                    ID_JobTitle = jobTitles[2].Id
                 }
             };
             context.Users.AddRange(users);
@@ -89,18 +89,18 @@ namespace Api_Restful.Infrastructure.Migrations
             // TaskUsers
             var taskUsers = new[]
             {
-                new TaskUser { ID_Task = tasks[0].ID_PK, ID_User = users[0].ID_PK },
-                new TaskUser { ID_Task = tasks[1].ID_PK, ID_User = users[1].ID_PK },
-                new TaskUser { ID_Task = tasks[2].ID_PK, ID_User = users[2].ID_PK },
+                new TaskUserEntity { Id_Task = tasks[0].Id, Id_User = users[0].Id },
+                new TaskUserEntity { Id_Task = tasks[1].Id, Id_User = users[1].Id },
+                new TaskUserEntity { Id_Task = tasks[2].Id, Id_User = users[2].Id },
             };
             context.TaskUsers.AddRange(taskUsers);
 
             // Tokens
             var tokens = new[]
             {
-                new Token { Creation_Date = DateTime.UtcNow, ID_User = users[0].ID_PK },
-                new Token { Creation_Date = DateTime.UtcNow, ID_User = users[1].ID_PK },
-                new Token { Creation_Date = DateTime.UtcNow, ID_User = users[2].ID_PK },
+                new TokenEntity { Creation_Date = DateTime.UtcNow, ID_User = users[0].Id },
+                new TokenEntity { Creation_Date = DateTime.UtcNow, ID_User = users[1].Id },
+                new TokenEntity { Creation_Date = DateTime.UtcNow, ID_User = users[2].Id },
             };
             context.Tokens.AddRange(tokens);
 

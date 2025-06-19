@@ -28,9 +28,9 @@ namespace Api_Restful.Presentation.Controllers
         }
 
         [HttpDelete("{id}")]
-        public bool DeleteTask(int id)
+        public async Task<bool> DeleteTask(int id)
         {
-            return _taskService.DeleteTask(id);
+            return await _taskService.DeleteTask(id);
         }
 
         [HttpPut("{id}")]
@@ -58,6 +58,17 @@ namespace Api_Restful.Presentation.Controllers
             }
 
             return Ok(tasks);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var task = _taskService.GetTaskById(id);
+            if (task is null)
+            {
+                return NotFound($"Task with ID {id} not found.");
+            }
+            return Ok(task);
         }
     }
 }

@@ -1,5 +1,7 @@
 using Api_Restful.Application.Interfaces;
+using Api_Restful.Application.Mappings;
 using Api_Restful.Application.Services;
+using Api_Restful.Infrastructure.Migrations;
 using Api_Restful.Infrastructure.Repositories;
 using Api_Restful.Infrastructure.Services;
 using Discord.Commands;
@@ -7,11 +9,11 @@ using Discord.WebSocket;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Api_Restful.Infrastructure.Migrations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddCustomMappings();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHostedService<DiscordBotService>();
