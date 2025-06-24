@@ -7,6 +7,8 @@ public class TaskEntityMapping : Profile
 {
     public TaskEntityMapping()
     {
-        CreateMap<TaskEntity, TaskDto>().ReverseMap();
+        CreateMap<TaskEntity, TaskDto>()
+            .ReverseMap()
+            .ForAllMembers(opt => opt.Condition((dto, entity, aux) => aux != null));
     }
 }
