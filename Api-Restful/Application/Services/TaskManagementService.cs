@@ -50,11 +50,11 @@ namespace Api_Restful.Application.Services
                 throw new ArgumentNullException(nameof(taskDto), "Task data cannot be null.");
             }
 
-            var existingTask = await _taskRepository.GetById(taskDto.ID_PK);
+            var existingTask = await _taskRepository.GetById(taskDto.Id);
 
             if (existingTask is null)
             {
-                throw new KeyNotFoundException($"Task with ID {taskDto.ID_PK} not found.");
+                throw new KeyNotFoundException($"Task with ID {taskDto.Id} not found.");
             }
 
             _mapper.Map(taskDto, existingTask);

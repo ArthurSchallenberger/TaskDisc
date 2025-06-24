@@ -36,7 +36,7 @@ namespace Api_Restful.Presentation.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTask(int id, [FromBody] TaskDto taskDto)
         {
-            taskDto.ID_PK = id;
+            taskDto.Id = id;
             var task = await _taskService.UpdateTask(taskDto);
 
             if (task is null)

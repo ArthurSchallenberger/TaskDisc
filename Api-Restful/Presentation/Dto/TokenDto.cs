@@ -2,7 +2,7 @@
 
 public class TokenDto
 {
-    public int ID_PK { get; set; }
+    public int Id { get; set; }
     public DateTime Creation_Date { get; set; }
     public int ID_User { get; set; }
 }

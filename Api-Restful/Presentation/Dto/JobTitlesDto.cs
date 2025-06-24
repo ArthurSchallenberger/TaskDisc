@@ -3,7 +3,7 @@
 
 public class JobTitlesDto
 {
-    public int ID_PK { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; }
     public string Abbreviation { get; set; }
 }

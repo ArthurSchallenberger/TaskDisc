@@ -14,6 +14,8 @@ builder.Services.AddCustomMappings();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
 #region Discord Bot Configuration
 builder.Services.AddHostedService<DiscordBotService>();
 builder.Services.AddSingleton<DiscordSocketClient>();

@@ -39,13 +39,13 @@ namespace Api_Restful.Application.Services
                 ID_User = query.Id_User,
                 Task = new TaskDto
                 {
-                    ID_PK = query.Task.Id, 
+                    Id = query.Task.Id, 
                     Description = query.Task.Description, 
                     Status = query.Task.Status
                 },
                 User = new UserDto 
                 {
-                    ID_PK = query.User.Id, 
+                    Id = query.User.Id, 
                     Name = query.User.Name, 
                     Email = query.User.Email
                 } 

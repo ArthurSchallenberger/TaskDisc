@@ -20,7 +20,7 @@ namespace Testes.UnitTests
         [Fact]
         public async Task GetAll_ReturnsOkResult()
         {
-            var tasks = new List<TaskDto> { new TaskDto { ID_PK = 1, Subject = "Test Task" } };
+            var tasks = new List<TaskDto> { new TaskDto { Id = 1, Subject = "Test Task" } };
 
             _mockService.Setup(s => s.GetAllTasks()).ReturnsAsync(tasks);
             var result = await _controller.GetAll();
