@@ -7,9 +7,9 @@ namespace Api_Restful.Application.Interfaces
     {
         Task<UserEntity> CreateUser(UserDto userDto);
         Task<UserDto> GetUserById(int id);
-        List<UserEntity> GetUsersByCargoId(int cargoId);
-        Task<UserEntity> UpdateUser(UserDto userDto);
-        bool DeleteUser(int id);
+        Task<IEnumerable<UserDto>> GetAllUsersByJobTittleId(int jobTittleId);
+        Task<UserDto> UpdateUser(UserDto userDto);
+        Task<bool> DeleteUser(int id);
 
         Task<IEnumerable<UserDto>> GetAllUsers();
     }

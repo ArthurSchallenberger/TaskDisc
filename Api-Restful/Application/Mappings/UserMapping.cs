@@ -9,7 +9,10 @@ public class UserMapping : Profile
     public UserMapping()
     {
         CreateMap<UserEntity, UserDto>()
-            .ForMember(dest => dest.Password, opt => opt.Ignore())
-            .ReverseMap();
+              .ReverseMap()
+              .ForMember(entity => entity.ID_JobTitle, opt => opt.MapFrom(
+                  (dto, entity) => dto.ID_JobTitle.HasValue ? dto.ID_JobTitle : entity.ID_JobTitle)
+              ).ForAllMembers(opt => opt.Condition((dto, entity, aux) => aux != null));
+
     }
 }

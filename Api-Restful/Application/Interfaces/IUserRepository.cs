@@ -4,12 +4,12 @@ namespace Api_Restful.Application.Interfaces
 {
     public interface IUserRepository
     {
-        UserEntity Add(UserEntity user);
-        UserEntity GetById(int id);
-        List<UserEntity> GetByCargoId(int cargoId);
-        UserEntity Update(UserEntity user);
-        bool Delete(int id);
+        Task<UserEntity> Add(UserEntity user);
+        Task<UserEntity> GetById(int id);
+        Task<IEnumerable<UserEntity>> GetByJobTittleId(int cargoId);
+        Task<UserEntity> Update(UserEntity user);
+        Task<bool> Delete(int id);
 
-        IEnumerable<UserEntity> GetAll();
+        Task<IEnumerable<UserEntity>> GetAll();
     }
 }

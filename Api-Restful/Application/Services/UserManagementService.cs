@@ -1,6 +1,7 @@
 ﻿using Api_Restful.Application.Interfaces;
 using Api_Restful.Core.Entities;
 using Api_Restful.Presentation.Dto;
+using AutoMapper;
 
 namespace Api_Restful.Application.Services
 {
@@ -8,102 +9,84 @@ namespace Api_Restful.Application.Services
     {
 
         private readonly IUserRepository _userRepository;
-
-        public UserManagementService(IUserRepository userRepository)
+        private readonly IMapper _mapper;
+        public UserManagementService(
+            IUserRepository userRepository,
+            IMapper mapper
+        )
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public async Task<UserEntity> CreateUser(UserDto userDto)
         {
-            if (userDto == null) throw new ArgumentNullException(nameof(userDto), "User data cannot be null.");
-            if (string.IsNullOrEmpty(userDto.Name)) throw new ArgumentException("Nome é obrigatório.", nameof(userDto.Name));
-            if (string.IsNullOrEmpty(userDto.Email)) throw new ArgumentException("Email é obrigatório.", nameof(userDto.Email));
-            if (string.IsNullOrEmpty(userDto.Password)) throw new ArgumentException("Senha é obrigatória.", nameof(userDto.Password));
-            if (userDto.ID_JobTitle <= 0) throw new ArgumentException("ID do cargo é obrigatório.", nameof(userDto.ID_JobTitle));
-
-
-            if (!userDto.Email.Contains("@")) throw new ArgumentException("Email inválido.", nameof(userDto.Email));
-
-            var user = new UserEntity
+            if (userDto is null)
             {
-                Id = userDto.ID_PK,
-                Name = userDto.Name,
-                Password = userDto.Password,
-                Email = userDto.Email,
-                ID_JobTitle = userDto.ID_JobTitle ?? 1,
-                ID_Token = userDto.ID_Token
-            };
+                throw new ArgumentNullException(nameof(userDto), "User data cannot be null.");
+            }
+            var user = _mapper.Map<UserEntity>(userDto);
 
-            return _userRepository.Add(user);
+            return await _userRepository.Add(user);
         }
 
-        public bool DeleteUser(int id)
+        public async Task<bool> DeleteUser(int id)
         {
             var user = _userRepository.GetById(id);
             if (user == null) return false;
-            return _userRepository.Delete(id);
+            return await _userRepository.Delete(id);
         }
 
         public async Task<UserDto> GetUserById(int id)
         {
-            _userRepository.GetById(id);
-            var user = _userRepository.GetById(id);
-            if (user == null) throw new InvalidOperationException("User not found.");
-
-            var userDto = new UserDto
+            var user = await _userRepository.GetById(id);
+            if (user == null)
             {
-                ID_PK = user.Id,
-                Name = user.Name,
-                Email = user.Email,
-                Password = user.Password,
-                ID_JobTitle = user.ID_JobTitle,
-                ID_Token = user.ID_Token
-            };
+                throw new InvalidOperationException("User not found.");
+            }
+            return _mapper.Map<UserDto>(user);
 
-            return userDto;
+
+
         }
 
-        public List<UserEntity> GetUsersByCargoId(int cargoId)
+        public async Task<IEnumerable<UserDto>> GetAllUsersByJobTittleId(int idJobTittle)
         {
-            throw new NotImplementedException();
+            var users = await _userRepository.GetByJobTittleId(idJobTittle);
+            if (users is null)
+            {
+                throw new InvalidOperationException("No users found.");
+            }
+            return _mapper.Map<IEnumerable<UserDto>>(users);
+
         }
 
-        public async Task<UserEntity> UpdateUser(UserDto userDto)
+        public async Task<UserDto> UpdateUser(UserDto userDto)
         {
-            if (userDto == null) throw new ArgumentNullException(nameof(userDto), "User data cannot be null.");
-            if (userDto.ID_PK <= 0) throw new ArgumentException("ID do usuário é obrigatório.", nameof(userDto.ID_PK));
-            var existingUser = _userRepository.GetById(userDto.ID_PK);
-            if (existingUser == null) throw new InvalidOperationException("Usuário não encontrado.");
+            if( userDto is null)
+            {
+                throw new ArgumentNullException(nameof(userDto), "User data cannot be null.");
+            }   
 
+            var user = await _userRepository.GetById(userDto.Id);
 
-            existingUser.Name = string.IsNullOrEmpty(userDto.Name) ? existingUser.Name : userDto.Name;
-            existingUser.Email = string.IsNullOrEmpty(userDto.Email) ? existingUser.Email : userDto.Email;
-            existingUser.Password = string.IsNullOrEmpty(userDto.Password) ? existingUser.Password : userDto.Password;
-            existingUser.ID_JobTitle = (int)(userDto.ID_JobTitle > 0 ? userDto.ID_JobTitle : existingUser.ID_JobTitle);
+            if(user is null)
+            {
+                throw new InvalidOperationException("User not found.");
+            }
 
-            return _userRepository.Update(existingUser);
+            _mapper.Map(userDto, user);
+
+            var updateUser = await _userRepository.Update(user);
+
+            return _mapper.Map<UserDto>(updateUser);
         }
 
         public async Task<IEnumerable<UserDto>> GetAllUsers()
         {
-            var users = _userRepository.GetAll();
-            if (users == null || !users.Any())
-            {
-                throw new InvalidOperationException("No users found.");
-            }
+            var users = await _userRepository.GetAll();
 
-            var userDtos = users.Select(u => new UserDto
-            {
-                ID_PK = u.Id,
-                Name = u.Name,
-                Email = u.Email,
-                Password = u.Password,
-                ID_JobTitle = u.ID_JobTitle,
-                ID_Token = u.ID_Token
-            }).ToList();
-
-            return userDtos;
+            return _mapper.Map<IEnumerable<UserDto>>(users);
         }
     }
 }

@@ -28,9 +28,9 @@ namespace Api_Restful.Presentation.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            var result = _userService.DeleteUser(id);
+            var result = await _userService.DeleteUser(id);
             if (!result)
             {
                 return NotFound($"User with ID {id} not found.");
@@ -41,7 +41,7 @@ namespace Api_Restful.Presentation.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] UserDto userDto)
         {
-            userDto.ID_PK = id;
+            userDto.Id = id;
             var user = await _userService.UpdateUser(userDto);
             if (user is null)
             {

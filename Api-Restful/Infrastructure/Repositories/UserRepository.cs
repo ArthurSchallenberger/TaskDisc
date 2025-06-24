@@ -13,42 +13,48 @@ namespace Api_Restful.Infrastructure.Repositories
             _context = context;
         }
 
-        public UserEntity Add(UserEntity user)
+        public async Task<UserEntity> Add(UserEntity user)
         {
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
             return user;
         }
 
-        public UserEntity GetById(int id)
+        public async Task<UserEntity> GetById(int id)
         {
-            return _context.Users.Include(u => u.JobTitle).FirstOrDefault(u => u.Id == id);
+            return await _context.Users
+                .Include(u => u.JobTitle)
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public List<UserEntity> GetByCargoId(int cargoId)
+        public async Task<IEnumerable<UserEntity>> GetByJobTittleId(int idJobTittle)
         {
-            return _context.Users.Include(u => u.JobTitle).Where(u => u.ID_JobTitle == cargoId).ToList();
+            return await _context.Users
+                .Include(u => u.JobTitle)
+                .Where(u => u.ID_JobTitle == idJobTittle).ToListAsync();
         }
 
-        public UserEntity Update(UserEntity user)
+        public async Task<UserEntity> Update(UserEntity user)
         {
             _context.Users.Update(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return user;
         }
 
-        public bool Delete(int id)
+        public async Task<bool> Delete(int id)
         {
             var user = _context.Users.FirstOrDefault(u => u.Id == id);
             if (user == null) return false;
             _context.Users.Remove(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
 
-        public IEnumerable<UserEntity> GetAll()
+        public async Task<IEnumerable<UserEntity>> GetAll()
         {
-            return _context.Users.Include(u => u.JobTitle).ToList();
+            return await _context.Users
+                .Include(u => u.JobTitle)
+                .ToListAsync();
         }
     }
 }
