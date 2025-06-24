@@ -1,5 +1,4 @@
-﻿using Api_Restful.Core.Entities;
-
+﻿
 namespace Api_Restful.Presentation.Dto;
 
 public class UserDto
@@ -12,6 +11,5 @@ public class UserDto
     public int? ID_Token { get; set; }
 
     public JobTitlesDto JobTitle { get; set; }
-    public ICollection<TaskUserDto> TaskUsers { get; set; }
     public ICollection<TokenDto> Tokens { get; set; }
 }
