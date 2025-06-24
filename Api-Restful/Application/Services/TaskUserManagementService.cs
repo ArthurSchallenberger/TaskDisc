@@ -1,74 +1,92 @@
 ﻿using Api_Restful.Application.Interfaces;
 using Api_Restful.Core.Entities;
 using Api_Restful.Presentation.Dto;
+using AutoMapper;
 
-namespace Api_Restful.Application.Services
+namespace Api_Restful.Application.Services;
+
+public class TaskUserManagementService : ITaskUserService
 {
-    public class TaskUserManagementService : ITaskUserService
+
+    private readonly ITaskUserRepository _taskUserRepository;
+    private readonly IMapper _mapper;
+    public TaskUserManagementService(
+        ITaskUserRepository taskUserRepository,
+        IMapper mapper
+    )
+    {
+        _taskUserRepository = taskUserRepository;
+        _mapper = mapper;
+    }
+
+    public async Task<TaskUserEntity> CreateTaskUser(TaskUserDto taskUserDto)
+    {
+        if (taskUserDto is null)
+        {
+            throw new ArgumentNullException(nameof(taskUserDto), "TaskUserDto cannot be null.");
+        }
+
+        var taskUserEntity = _mapper.Map<TaskUserEntity>(taskUserDto);
+
+        return await _taskUserRepository.Add(taskUserEntity);
+    }
+
+    public async Task<bool> DeleteTaskUser(int id)
+    {
+        var taskUser = await _taskUserRepository.GetById(id);
+        if (taskUser == null)
+        {
+            throw new KeyNotFoundException($"TaskUser with ID {id} not found.");
+        }
+        return await _taskUserRepository.Delete(id);
+    }
+
+
+    public async Task<TaskUserDto> GetByTaskId(int taskId)
+    {
+        var taskUserQuery = await _taskUserRepository.GetByTaskId(taskId);
+
+        if (taskUserQuery is null)
+        {
+            throw new KeyNotFoundException($"TaskUser with Task ID {taskId} not found.");
+        }
+
+        return _mapper.Map<TaskUserDto>(taskUserQuery);
+
+    }
+
+    public async Task<TaskUserDto> GetByUserId(int id)
+    {
+        var taskUserQuery = await _taskUserRepository.GetByUserId(id);
+
+        if (taskUserQuery is null)
+        {
+            throw new KeyNotFoundException($"TaskUser with ID {id} not found.");
+        }
+
+        return _mapper.Map<TaskUserDto>(taskUserQuery);
+    }
+
+    public async Task<TaskUserDto> Update(TaskUserDto taskUser)
     {
 
-        private readonly ITaskUserRepository _taskUserRepository;
-        public  TaskUserManagementService(ITaskUserRepository taskUserRepository)
+        if (taskUser is null)
         {
-            _taskUserRepository = taskUserRepository;
+            throw new ArgumentNullException(nameof(taskUser), "TaskUserDto cannot be null.");
         }
 
-        public async Task<TaskUserEntity> CreateTaskUser(TaskUserDto taskUserDto)
+        var existingTaskUser = await _taskUserRepository.GetById(taskUser.Id);
+        if (existingTaskUser is null)
         {
-            var taskUser = new TaskUserEntity
-            {
-                Id_Task = taskUserDto.ID_Task,
-                Id_User = taskUserDto.ID_User
-            };
-            var createdTaskUser = _taskUserRepository.Add(taskUser);
-            return createdTaskUser;
+            throw new KeyNotFoundException($"TaskUser with ID {taskUser.Id} not found.");
         }
 
-        public bool DeleteTaskUser(int id)
-        {
-            return _taskUserRepository.Delete(id);
-        }
+        _mapper.Map(taskUser, existingTaskUser);
 
+        var updatedTaskUser = await _taskUserRepository.Update(existingTaskUser);
 
-        public async Task<TaskUserDto> GetByTaskId(int taskId)
-        {
-            var query = _taskUserRepository.GetByTaskId(taskId);
-            var returnDto = new TaskUserDto
-            {
-                ID_Task = query.Id_Task,
-                ID_User = query.Id_User,
-                Task = new TaskDto
-                {
-                    Id = query.Task.Id, 
-                    Description = query.Task.Description, 
-                    Status = query.Task.Status
-                },
-                User = new UserDto 
-                {
-                    Id = query.User.Id, 
-                    Name = query.User.Name, 
-                    Email = query.User.Email
-                } 
-            };
-
-
-            return returnDto;
-        }
-
-        public async Task<TaskUserEntity> Update(TaskUserDto taskUser)
-        {
-            var updatedTaskUser = new TaskUserEntity
-            {
-                Id_Task = taskUser.ID_Task,
-                Id_User = taskUser.ID_User
-            };
-
-            return _taskUserRepository.Update(updatedTaskUser);
-        }
-
-        Task<TaskUserEntity> ITaskUserService.GetByUserId(int id)
-        {
-            throw new NotImplementedException();
-        }
+        return _mapper.Map<TaskUserDto>(updatedTaskUser);
     }
+
+
 }

@@ -4,10 +4,11 @@ namespace Api_Restful.Application.Interfaces
 {
     public interface ITaskUserRepository
     {
-        TaskUserEntity Add(TaskUserEntity taskUser);
-        TaskUserEntity GetByUserId(int id);
-        TaskUserEntity GetByTaskId(int taskId);
-        TaskUserEntity Update(TaskUserEntity taskUser);
-        bool Delete(int id);
+        Task<TaskUserEntity> Add(TaskUserEntity taskUser);
+        Task<TaskUserEntity> GetById(int id);
+        Task<TaskUserEntity> GetByUserId(int id);
+        Task<TaskUserEntity> GetByTaskId(int taskId);
+        Task<TaskUserEntity> Update(TaskUserEntity taskUser);
+        Task<bool> Delete(int id);
     }
 }
