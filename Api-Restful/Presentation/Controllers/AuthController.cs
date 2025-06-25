@@ -7,9 +7,9 @@ namespace Api_Restful.Presentation.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthenticationService _authService;
+        private readonly IJwtAuthenticationService _authService;
 
-        public AuthController(IAuthenticationService authService)
+        public AuthController(IJwtAuthenticationService authService)
         {
             _authService = authService;
         }

@@ -56,4 +56,11 @@ public class UserRepository : IUserRepository
             .Include(u => u.JobTitle)
             .ToListAsync();
     }
+
+    public async Task<UserEntity> GetByEmail(string email)
+    {
+        return await _context.Users
+            .Include(u => u.JobTitle)
+            .FirstOrDefaultAsync(u => u.Email == email);
+    }
 }

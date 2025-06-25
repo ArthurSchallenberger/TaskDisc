@@ -4,9 +4,9 @@ namespace Api_Restful.Core.UseCases
 {
     public class UserLoginUseCase 
     {
-        private readonly IAuthenticationService _authService;
+        private readonly IJwtAuthenticationService _authService;
 
-        public UserLoginUseCase(IAuthenticationService authService)
+        public UserLoginUseCase(IJwtAuthenticationService authService)
         {
             _authService = authService;
         }

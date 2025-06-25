@@ -6,29 +6,36 @@ using System.Text;
 
 namespace Api_Restful.Infrastructure.Services
 {
-    public class JwtAuthenticationService : IAuthenticationService
+    public class JwtAuthenticationService : IJwtAuthenticationService
     {
         private readonly string _key;
-
-        public JwtAuthenticationService(IConfiguration configuration)
+        public JwtAuthenticationService(
+            IConfiguration configuration
+        )
         {
             _key = configuration["Jwt:Key"];
         }
 
-        public string GenerateToken(string userId, string role)
+        public  string GenerateToken(string email, string password)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_key);
+            var keyBytes = Encoding.ASCII.GetBytes(_key);
+            var securityKey = new SymmetricSecurityKey(keyBytes);
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+            new Claim(ClaimTypes.Name, email),
+            new Claim(ClaimTypes.NameIdentifier, email) 
+        };
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, userId),
-                    new Claim(ClaimTypes.Role, role)
-                }),
-                Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddMinutes(60),
+                SigningCredentials = credentials
             };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
@@ -53,6 +60,11 @@ namespace Api_Restful.Infrastructure.Services
             {
                 return false;
             }
+        }
+
+        string IJwtAuthenticationService.GenerateToken(string userId, string role)
+        {
+            throw new NotImplementedException();
         }
     }
 }

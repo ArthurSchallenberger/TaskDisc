@@ -9,7 +9,7 @@ namespace Api_Restful.Infrastructure
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddScoped<IAuthenticationService, JwtAuthenticationService>();
+            services.AddScoped<IJwtAuthenticationService, JwtAuthenticationService>();
             services.AddScoped<ITaskUserService, TaskUserManagementService>();
             services.AddScoped<ITaskUserRepository, TaskUserRepository>();
             services.AddScoped<ITaskRepository, TaskRepository>();

@@ -8,6 +8,7 @@ namespace Api_Restful.Application.Interfaces
         Task<UserEntity> CreateUser(UserDto userDto);
         Task<UserDto> GetUserById(int id);
         Task<IEnumerable<UserDto>> GetAllUsersByJobTittleId(int jobTittleId);
+        Task<bool> ValidateUserCredentials(string email, string password);
         Task<UserDto> UpdateUser(UserDto userDto);
         Task<bool> DeleteUser(int id);
 

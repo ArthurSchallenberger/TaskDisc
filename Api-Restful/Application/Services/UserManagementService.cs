@@ -25,6 +25,8 @@ public class UserManagementService : IUserService
         {
             throw new ArgumentNullException(nameof(userDto), "User data cannot be null.");
         }
+
+        userDto.Password = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
         var user = _mapper.Map<UserEntity>(userDto);
 
         return await _userRepository.Add(user);
@@ -87,5 +89,13 @@ public class UserManagementService : IUserService
         var users = await _userRepository.GetAll();
 
         return _mapper.Map<IEnumerable<UserDto>>(users);
+    }
+
+    public async Task<bool> ValidateUserCredentials(string email, string password)
+    {
+        var user = await _userRepository.GetByEmail(email);
+        if (user == null) return false;
+        
+        return BCrypt.Net.BCrypt.Verify(password, user.Password);
     }
 }
