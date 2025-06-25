@@ -7,8 +7,9 @@ public class TokenEntity
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    public DateTime Creation_Date { get; set; }
+    public string Token { get; set; }
     public int ID_User { get; set; }
-
+    public DateTime Creation_Date { get; set; }
+    public DateTime Expiration_Date { get; set; }
     public UserEntity User { get; set; }
 }
