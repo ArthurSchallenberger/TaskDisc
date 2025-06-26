@@ -1,4 +1,5 @@
 ﻿using Api_Restful.Application.Interfaces;
+using Api_Restful.Presentation.Dto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api_Restful.Presentation.Controllers
@@ -7,33 +8,41 @@ namespace Api_Restful.Presentation.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IJwtAuthenticationService _authService;
+        private readonly IAuthService _authService;
 
-        public AuthController(IJwtAuthenticationService authService)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
         }
 
         [HttpPost("token")]
-        public IActionResult GenerateToken([FromBody] LoginRequest request)
+        public async Task<IActionResult> GenerateToken([FromBody] LoginDto request)
         {
-            if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
+            if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
             {
                 return BadRequest("Username and password are required.");
             }
 
-            
-            string userId = "user123"; 
-            string role = "user"; 
-            string token = _authService.GenerateToken(userId, role);
+
+            string token = await _authService.AuthenticateToken(request.Email, request.Password);
 
             return Ok(new { token });
         }
+        [HttpGet("{token}")]
+        public async Task<IActionResult> ValidateToken(string token)
+        {
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest("Token is required.");
+            }
+            bool isValid = await _authService.ValidateToken(token);
+            if (!isValid)
+            {
+                return Unauthorized("Invalid token.");
+            }
+            return Ok("Token is valid.");
+        }
     }
 
-    public class LoginRequest
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
-    }
+   
 }

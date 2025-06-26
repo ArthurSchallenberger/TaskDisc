@@ -48,5 +48,14 @@ public class DatabaseContext : DbContext
             .HasMany(u => u.Tokens)
             .WithOne(t => t.User)
             .HasForeignKey(t => t.ID_User);
+
+        modelBuilder.Entity<TokenEntity>()
+            .HasKey(t => t.Id);
+
+        modelBuilder.Entity<TokenEntity>()
+            .HasOne(t => t.User)
+            .WithMany(u => u.Tokens)
+            .HasForeignKey(t => t.ID_User);
+
     }
 }

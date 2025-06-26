@@ -2,6 +2,7 @@
 using Api_Restful.Core.Entities;
 using Api_Restful.Presentation.Dto;
 using Discord;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api_Restful.Infrastructure.Repositories;
 
@@ -26,6 +27,11 @@ public class TokenRepository : ITokenRepository
         _context.Tokens.Remove(token);
         await _context.SaveChangesAsync();
         return true;
+    }
+
+    public async Task<TokenEntity> GetByHashToken(string hashToken)
+    {
+        return await _context.Tokens.FirstOrDefaultAsync(t => t.Token == hashToken);
     }
 
     public async Task<TokenEntity> Update(TokenEntity tokenEntity)

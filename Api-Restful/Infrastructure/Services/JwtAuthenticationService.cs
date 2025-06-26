@@ -24,7 +24,6 @@ namespace Api_Restful.Infrastructure.Services
 
             var claims = new[]
             {
-            new Claim(ClaimTypes.Name, email),
             new Claim(ClaimTypes.NameIdentifier, email) 
         };
 
@@ -60,11 +59,6 @@ namespace Api_Restful.Infrastructure.Services
             {
                 return false;
             }
-        }
-
-        string IJwtAuthenticationService.GenerateToken(string userId, string role)
-        {
-            throw new NotImplementedException();
         }
     }
 }

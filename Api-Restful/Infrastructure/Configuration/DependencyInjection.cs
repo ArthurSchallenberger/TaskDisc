@@ -16,6 +16,9 @@ namespace Api_Restful.Infrastructure
             services.AddScoped<ITaskService, TaskManagementService>();
             services.AddScoped<IUserService, UserManagementService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAuthService, AuthManagementService>();
+            services.AddScoped<ITokenRepository, TokenRepository>();
+
 
             return services;
         }
