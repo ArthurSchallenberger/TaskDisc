@@ -1,7 +1,5 @@
 ﻿using Api_Restful.Application.Interfaces;
-using Api_Restful.Core.Entities;
 using AutoMapper;
-using System;
 
 namespace Api_Restful.Application.Services
 {
@@ -36,7 +34,7 @@ namespace Api_Restful.Application.Services
             }
             var token = _jwtAuthenticationService.GenerateToken(email, password);
 
-            return await RegisterTokenInUser(token, email) ? throw new InvalidOperationException("Failed to register token for user.") : token;
+            return await RegisterTokenInUser(token, email) ?  token : throw new InvalidOperationException("Failed to register token for user.");
         }
 
         public async Task<bool> ValidateToken(string token)
@@ -49,7 +47,6 @@ namespace Api_Restful.Application.Services
             return _jwtAuthenticationService.ValidateToken(token);
         }
 
-        //TODO : fix relationship between user and token
         private async Task<bool> RegisterTokenInUser(string token, string email)
         {
             var user = await _userRepository.GetByEmail(email);
@@ -63,24 +60,14 @@ namespace Api_Restful.Application.Services
             {
                 Token = token,
                 ID_User = user.Id,
-                Expiration_Date = DateTime.UtcNow.AddHours(1) 
+                IsRevoked = false,
+                Creation_Date = DateTime.UtcNow,
+                Expiration_Date = DateTime.UtcNow.AddHours(1)
             };
+
             var inputToken = await _tokenRepository.Add(tokenEntity);
             
-            var userEntity = new UserEntity
-            {
-                Id = user.Id,
-                Email = user.Email,
-                ID_JobTitle = user.ID_JobTitle,
-                ID_Token = inputToken.Id 
-            };
-
-            //_mapper.Map(inputToken, user);
-            //user.ID_Token = inputToken.Id; 
-            var updateTokenId = await _userRepository.Update(userEntity);
-            
             return inputToken is not null;
-
         }
     }
 }

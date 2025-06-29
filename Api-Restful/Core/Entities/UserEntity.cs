@@ -11,7 +11,6 @@ public class UserEntity
     public string Password { get; set; }
     public string Email { get; set; }
     public int ID_JobTitle { get; set; }
-    public int? ID_Token { get; set; }
 
     public JobTitlesEntity JobTitle { get; set; }
     public ICollection<TaskUserEntity> TaskUsers { get; set; }
