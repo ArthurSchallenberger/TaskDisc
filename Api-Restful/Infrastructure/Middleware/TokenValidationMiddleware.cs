@@ -15,7 +15,7 @@ public class TokenValidationMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        
+
         if (context.Request.Path.StartsWithSegments("/api/Auth/token"))
         {
             await _next(context);
