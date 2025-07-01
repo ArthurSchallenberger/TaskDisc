@@ -1,7 +1,4 @@
 ﻿using Api_Restful.Application.Interfaces;
-using Api_Restful.Core.Entities;
-using Api_Restful.Presentation.Dto;
-using Discord;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api_Restful.Infrastructure.Repositories;
@@ -32,6 +29,14 @@ public class TokenRepository : ITokenRepository
     public async Task<TokenEntity> GetByHashToken(string hashToken)
     {
         return await _context.Tokens.FirstOrDefaultAsync(t => t.Token == hashToken);
+    }
+
+    public async Task<ICollection<TokenEntity>> GetExpiredTokensByUserId(int id)
+    {
+        return await _context.Tokens
+            .Where(t => t.Expiration_Date < DateTime.UtcNow & t.ID_User == id)
+            .OrderByDescending(t => t.Expiration_Date)
+            .ToListAsync();
     }
 
     public async Task<TokenEntity> Update(TokenEntity tokenEntity)
