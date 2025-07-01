@@ -1,7 +1,7 @@
-﻿using Api_Restful.Core.Entities;
-using Api_Restful.Presentation.Dto;
+﻿using TaskDisc.Core.Entities;
+using TaskDisc.Presentation.Dto;
 
-namespace Api_Restful.Application.Interfaces
+namespace TaskDisc.Application.Interfaces
 {
     public interface IUserService
     {

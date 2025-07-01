@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Api_Restful.Migrations
+namespace TaskDisc.Migrations
 {
     /// <inheritdoc />
     public partial class _004 : Migration

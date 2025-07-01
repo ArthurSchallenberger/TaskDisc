@@ -1,6 +1,6 @@
-﻿using Api_Restful.Infrastructure.Migrations;
+﻿using TaskDisc.Infrastructure.Migrations;
 
-namespace Api_Restful.Infrastructure.Configuration
+namespace TaskDisc.Infrastructure.Configuration
 {
     public static class DatabaseInitializer
     {

@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using Api_Restful.Core.Entities;
+using TaskDisc.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Api_Restful.Infrastructure.Migrations
+namespace TaskDisc.Infrastructure.Migrations
 {
     public static class DbInitializer
     {

@@ -1,6 +1,6 @@
-﻿using Api_Restful.Application.Interfaces;
+﻿using TaskDisc.Application.Interfaces;
 
-namespace Api_Restful.Core.UseCases
+namespace TaskDisc.Core.UseCases
 {
     public class UserLoginUseCase 
     {

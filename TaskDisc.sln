@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36202.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api-Restful", "Api-Restful\Api-Restful.csproj", "{AB3D3355-8BF9-4677-A7AB-51C05C88D950}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskDisc", "Api-Restful\TaskDisc.csproj", "{AB3D3355-8BF9-4677-A7AB-51C05C88D950}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ModalDiscord", "ModalDiscord\ModalDiscord.esproj", "{F78FDCAB-1133-0BDA-3A98-8A3970FA48CB}"
 EndProject

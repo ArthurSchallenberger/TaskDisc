@@ -1,9 +1,9 @@
-﻿using Api_Restful.Application.Interfaces;
-using Api_Restful.Presentation.Dto;
-using Api_Restful.Core.Entities;
+﻿using TaskDisc.Application.Interfaces;
+using TaskDisc.Presentation.Dto;
+using TaskDisc.Core.Entities;
 using AutoMapper;
 
-namespace Api_Restful.Application.Services;
+namespace TaskDisc.Application.Services;
 
 public class TaskManagementService : ITaskService
 {

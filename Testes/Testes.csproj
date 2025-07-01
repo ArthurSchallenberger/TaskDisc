@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Api-Restful\Api-Restful.csproj" />
+    <ProjectReference Include="..\Api-Restful\TaskDisc.csproj" />
   </ItemGroup>
 
   <ItemGroup>

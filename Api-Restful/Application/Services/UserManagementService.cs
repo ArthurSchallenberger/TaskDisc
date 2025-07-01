@@ -1,9 +1,9 @@
-﻿using Api_Restful.Application.Interfaces;
-using Api_Restful.Core.Entities;
-using Api_Restful.Presentation.Dto;
+﻿using TaskDisc.Application.Interfaces;
+using TaskDisc.Core.Entities;
+using TaskDisc.Presentation.Dto;
 using AutoMapper;
 
-namespace Api_Restful.Application.Services;
+namespace TaskDisc.Application.Services;
 
 public class UserManagementService : IUserService
 {

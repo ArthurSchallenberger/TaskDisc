@@ -1,6 +1,6 @@
-using Api_Restful.Application.Mappings;
-using Api_Restful.Infrastructure;
-using Api_Restful.Infrastructure.Configuration;
+using TaskDisc.Application.Mappings;
+using TaskDisc.Infrastructure;
+using TaskDisc.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

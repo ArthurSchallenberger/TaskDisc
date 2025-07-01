@@ -1,4 +1,4 @@
-﻿namespace Api_Restful.Application.Interfaces
+﻿namespace TaskDisc.Application.Interfaces
 {
     public interface IJwtAuthenticationService
     {

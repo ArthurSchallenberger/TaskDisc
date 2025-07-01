@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Api_Restful.Core.Entities;
+namespace TaskDisc.Core.Entities;
 public class UserEntity
 {
     [Key]

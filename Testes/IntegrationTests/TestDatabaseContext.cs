@@ -1,7 +1,7 @@
-﻿using Api_Restful.Infrastructure;
+﻿using TaskDisc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-namespace Api_Restful.Testes.IntegrationTests
+namespace TaskDisc.Testes.IntegrationTests
 {
     public class TestDatabaseContext : DatabaseContext
     {

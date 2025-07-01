@@ -1,10 +1,10 @@
-﻿using Api_Restful.Application.Interfaces;
+﻿using TaskDisc.Application.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Api_Restful.Infrastructure.Services
+namespace TaskDisc.Infrastructure.Services
 {
     public class JwtAuthenticationService : IJwtAuthenticationService
     {

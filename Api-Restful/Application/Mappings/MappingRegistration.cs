@@ -1,6 +1,6 @@
-﻿using Api_Restful.Core.Entities;
+﻿using TaskDisc.Core.Entities;
 
-namespace Api_Restful.Application.Mappings;
+namespace TaskDisc.Application.Mappings;
 
 public static class MappingRegistration
 {

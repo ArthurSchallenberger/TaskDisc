@@ -1,9 +1,9 @@
 ﻿
-using Api_Restful.Core.Entities;
-using Api_Restful.Infrastructure.Migrations;
+using TaskDisc.Core.Entities;
+using TaskDisc.Infrastructure.Migrations;
 
 
-namespace Api_Restful.Testes.IntegrationTests
+namespace TaskDisc.Testes.IntegrationTests
 {
     public class DbInitializerTests
     {

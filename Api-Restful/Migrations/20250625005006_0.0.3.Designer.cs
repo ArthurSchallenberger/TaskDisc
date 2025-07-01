@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Api_Restful.Migrations
+namespace TaskDisc.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
     [Migration("20250625005006_0.0.3")]

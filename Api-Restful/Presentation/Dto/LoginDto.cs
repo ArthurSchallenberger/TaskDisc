@@ -1,4 +1,4 @@
-﻿namespace Api_Restful.Presentation.Dto
+﻿namespace TaskDisc.Presentation.Dto
 {
     public class LoginDto
     {

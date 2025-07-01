@@ -1,4 +1,4 @@
-﻿using Api_Restful.Core.Entities;
+﻿using TaskDisc.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

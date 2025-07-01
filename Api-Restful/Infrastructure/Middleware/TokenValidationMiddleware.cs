@@ -1,6 +1,6 @@
-﻿using Api_Restful.Application.Interfaces;
+﻿using TaskDisc.Application.Interfaces;
 
-namespace Api_Restful.Infrastructure.Middleware;
+namespace TaskDisc.Infrastructure.Middleware;
 
 public class TokenValidationMiddleware
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Api_Restful.Infrastructure.Repositories;
-using Api_Restful.Core.Entities;
+using TaskDisc.Infrastructure.Repositories;
+using TaskDisc.Core.Entities;
 
 namespace Testes.UnitTests
 {

@@ -1,6 +1,6 @@
-﻿using Api_Restful.Application.Interfaces;
-using Api_Restful.Presentation.Controllers;
-using Api_Restful.Presentation.Dto;
+﻿using TaskDisc.Application.Interfaces;
+using TaskDisc.Presentation.Controllers;
+using TaskDisc.Presentation.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 

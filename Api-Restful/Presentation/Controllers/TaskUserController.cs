@@ -1,9 +1,9 @@
-﻿using Api_Restful.Application.Interfaces;
-using Api_Restful.Presentation.Dto;
+﻿using TaskDisc.Application.Interfaces;
+using TaskDisc.Presentation.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api_Restful.Presentation.Controllers;
+namespace TaskDisc.Presentation.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

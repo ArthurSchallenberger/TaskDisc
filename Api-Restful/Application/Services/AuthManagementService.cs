@@ -1,7 +1,7 @@
-﻿using Api_Restful.Application.Interfaces;
+﻿using TaskDisc.Application.Interfaces;
 using AutoMapper;
 
-namespace Api_Restful.Application.Services
+namespace TaskDisc.Application.Services
 {
     public class AuthManagementService : IAuthService
     {

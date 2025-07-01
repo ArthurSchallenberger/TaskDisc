@@ -1,7 +1,7 @@
-﻿using Api_Restful.Application.Interfaces;
+﻿using TaskDisc.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Api_Restful.Infrastructure.Repositories;
+namespace TaskDisc.Infrastructure.Repositories;
 
 public class TokenRepository : ITokenRepository
 {

@@ -1,9 +1,9 @@
-﻿using Api_Restful.Application.Interfaces;
-using Api_Restful.Application.Services;
-using Api_Restful.Infrastructure.Repositories;
-using Api_Restful.Infrastructure.Services;
+﻿using TaskDisc.Application.Interfaces;
+using TaskDisc.Application.Services;
+using TaskDisc.Infrastructure.Repositories;
+using TaskDisc.Infrastructure.Services;
 
-namespace Api_Restful.Infrastructure
+namespace TaskDisc.Infrastructure
 {
     public static class DependencyInjection
     {

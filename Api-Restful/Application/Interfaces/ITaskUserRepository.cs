@@ -1,6 +1,6 @@
-﻿using Api_Restful.Core.Entities;
+﻿using TaskDisc.Core.Entities;
 
-namespace Api_Restful.Application.Interfaces
+namespace TaskDisc.Application.Interfaces
 {
     public interface ITaskUserRepository
     {
