@@ -1,12 +1,14 @@
 ﻿using Api_Restful.Application.Interfaces;
 using Api_Restful.Core.Entities;
 using Api_Restful.Presentation.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api_Restful.Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
