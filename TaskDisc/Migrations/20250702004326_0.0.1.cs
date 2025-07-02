@@ -18,8 +18,8 @@ namespace TaskDisc.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Abbreviation = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Abbreviation = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -34,10 +34,10 @@ namespace TaskDisc.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Creation_Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Completion_Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Description = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
                     Priority = table.Column<int>(type: "integer", nullable: false),
-                    Subject = table.Column<string>(type: "text", nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: false)
+                    Subject = table.Column<string>(type: "text", nullable: true),
+                    Status = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -50,11 +50,10 @@ namespace TaskDisc.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Password = table.Column<string>(type: "text", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false),
-                    ID_JobTitle = table.Column<int>(type: "integer", nullable: false),
-                    ID_Token = table.Column<int>(type: "integer", nullable: true)
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Password = table.Column<string>(type: "text", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: true),
+                    ID_JobTitle = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -72,7 +71,9 @@ namespace TaskDisc.Migrations
                 columns: table => new
                 {
                     Id_User = table.Column<int>(type: "integer", nullable: false),
-                    Id_Task = table.Column<int>(type: "integer", nullable: false)
+                    Id_Task = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 },
                 constraints: table =>
                 {
@@ -97,8 +98,12 @@ namespace TaskDisc.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Token = table.Column<string>(type: "text", nullable: true),
+                    ID_User = table.Column<int>(type: "integer", nullable: false),
+                    IsRevoked = table.Column<bool>(type: "boolean", nullable: false),
                     Creation_Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ID_User = table.Column<int>(type: "integer", nullable: false)
+                    Expiration_Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastUsed = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -120,6 +125,12 @@ namespace TaskDisc.Migrations
                 name: "IX_Tokens_ID_User",
                 table: "Tokens",
                 column: "ID_User");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tokens_Token",
+                table: "Tokens",
+                column: "Token",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_ID_JobTitle",

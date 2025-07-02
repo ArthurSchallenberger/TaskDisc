@@ -21,7 +21,7 @@ namespace TaskDisc.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Api_Restful.Core.Entities.JobTitlesEntity", b =>
+            modelBuilder.Entity("TaskDisc.Core.Entities.JobTitlesEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,7 @@ namespace TaskDisc.Migrations
                     b.ToTable("JobTitles");
                 });
 
-            modelBuilder.Entity("Api_Restful.Core.Entities.TaskEntity", b =>
+            modelBuilder.Entity("TaskDisc.Core.Entities.TaskEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,7 +71,7 @@ namespace TaskDisc.Migrations
                     b.ToTable("Tasks");
                 });
 
-            modelBuilder.Entity("Api_Restful.Core.Entities.TaskUserEntity", b =>
+            modelBuilder.Entity("TaskDisc.Core.Entities.TaskUserEntity", b =>
                 {
                     b.Property<int>("Id_User")
                         .HasColumnType("integer");
@@ -92,7 +92,7 @@ namespace TaskDisc.Migrations
                     b.ToTable("TaskUsers");
                 });
 
-            modelBuilder.Entity("Api_Restful.Core.Entities.UserEntity", b =>
+            modelBuilder.Entity("TaskDisc.Core.Entities.UserEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -155,15 +155,15 @@ namespace TaskDisc.Migrations
                     b.ToTable("Tokens");
                 });
 
-            modelBuilder.Entity("Api_Restful.Core.Entities.TaskUserEntity", b =>
+            modelBuilder.Entity("TaskDisc.Core.Entities.TaskUserEntity", b =>
                 {
-                    b.HasOne("Api_Restful.Core.Entities.TaskEntity", "Task")
+                    b.HasOne("TaskDisc.Core.Entities.TaskEntity", "Task")
                         .WithMany("TaskUsers")
                         .HasForeignKey("Id_Task")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Api_Restful.Core.Entities.UserEntity", "User")
+                    b.HasOne("TaskDisc.Core.Entities.UserEntity", "User")
                         .WithMany("TaskUsers")
                         .HasForeignKey("Id_User")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -174,9 +174,9 @@ namespace TaskDisc.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Api_Restful.Core.Entities.UserEntity", b =>
+            modelBuilder.Entity("TaskDisc.Core.Entities.UserEntity", b =>
                 {
-                    b.HasOne("Api_Restful.Core.Entities.JobTitlesEntity", "JobTitle")
+                    b.HasOne("TaskDisc.Core.Entities.JobTitlesEntity", "JobTitle")
                         .WithMany("User")
                         .HasForeignKey("ID_JobTitle")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -187,7 +187,7 @@ namespace TaskDisc.Migrations
 
             modelBuilder.Entity("TokenEntity", b =>
                 {
-                    b.HasOne("Api_Restful.Core.Entities.UserEntity", "User")
+                    b.HasOne("TaskDisc.Core.Entities.UserEntity", "User")
                         .WithMany("Tokens")
                         .HasForeignKey("ID_User")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -196,17 +196,17 @@ namespace TaskDisc.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Api_Restful.Core.Entities.JobTitlesEntity", b =>
+            modelBuilder.Entity("TaskDisc.Core.Entities.JobTitlesEntity", b =>
                 {
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Api_Restful.Core.Entities.TaskEntity", b =>
+            modelBuilder.Entity("TaskDisc.Core.Entities.TaskEntity", b =>
                 {
                     b.Navigation("TaskUsers");
                 });
 
-            modelBuilder.Entity("Api_Restful.Core.Entities.UserEntity", b =>
+            modelBuilder.Entity("TaskDisc.Core.Entities.UserEntity", b =>
                 {
                     b.Navigation("TaskUsers");
 

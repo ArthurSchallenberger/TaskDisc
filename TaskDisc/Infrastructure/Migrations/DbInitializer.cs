@@ -1,7 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using TaskDisc.Core.Entities;
-using Microsoft.EntityFrameworkCore;
+using TaskDisc.Presentation.Dto;
 
 namespace TaskDisc.Infrastructure.Migrations
 {
@@ -65,21 +66,21 @@ namespace TaskDisc.Infrastructure.Migrations
                 {
                     Name = "Alice",
                     Email = "alice@email.com",
-                    Password = "Senha123!",
+                    Password = BCrypt.Net.BCrypt.HashPassword("Senha123!"),
                     ID_JobTitle = jobTitles[0].Id
                 },
                 new UserEntity
                 {
                     Name = "Bob",
                     Email = "bob@email.com",
-                    Password = "Senha123!",
+                    Password = BCrypt.Net.BCrypt.HashPassword("Senha123!"),
                     ID_JobTitle = jobTitles[1].Id
                 },
                 new UserEntity
                 {
                     Name = "Carol",
                     Email = "carol@email.com",
-                    Password = "Senha123!",
+                    Password = BCrypt.Net.BCrypt.HashPassword("Senha123!"),
                     ID_JobTitle = jobTitles[2].Id
                 }
             };

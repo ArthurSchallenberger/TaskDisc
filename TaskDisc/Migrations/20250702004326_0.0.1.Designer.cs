@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace TaskDisc.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250625005006_0.0.3")]
-    partial class _003
+    [Migration("20250702004326_0.0.1")]
+    partial class _001
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace TaskDisc.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Api_Restful.Core.Entities.JobTitlesEntity", b =>
+            modelBuilder.Entity("TaskDisc.Core.Entities.JobTitlesEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,7 +43,7 @@ namespace TaskDisc.Migrations
                     b.ToTable("JobTitles");
                 });
 
-            modelBuilder.Entity("Api_Restful.Core.Entities.TaskEntity", b =>
+            modelBuilder.Entity("TaskDisc.Core.Entities.TaskEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -74,7 +74,7 @@ namespace TaskDisc.Migrations
                     b.ToTable("Tasks");
                 });
 
-            modelBuilder.Entity("Api_Restful.Core.Entities.TaskUserEntity", b =>
+            modelBuilder.Entity("TaskDisc.Core.Entities.TaskUserEntity", b =>
                 {
                     b.Property<int>("Id_User")
                         .HasColumnType("integer");
@@ -95,7 +95,34 @@ namespace TaskDisc.Migrations
                     b.ToTable("TaskUsers");
                 });
 
-            modelBuilder.Entity("Api_Restful.Core.Entities.TokenEntity", b =>
+            modelBuilder.Entity("TaskDisc.Core.Entities.UserEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ID_JobTitle")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ID_JobTitle");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("TokenEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -112,6 +139,12 @@ namespace TaskDisc.Migrations
                     b.Property<int>("ID_User")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastUsed")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Token")
                         .HasColumnType("text");
 
@@ -119,48 +152,21 @@ namespace TaskDisc.Migrations
 
                     b.HasIndex("ID_User");
 
+                    b.HasIndex("Token")
+                        .IsUnique();
+
                     b.ToTable("Tokens");
                 });
 
-            modelBuilder.Entity("Api_Restful.Core.Entities.UserEntity", b =>
+            modelBuilder.Entity("TaskDisc.Core.Entities.TaskUserEntity", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ID_JobTitle")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("ID_Token")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ID_JobTitle");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Api_Restful.Core.Entities.TaskUserEntity", b =>
-                {
-                    b.HasOne("Api_Restful.Core.Entities.TaskEntity", "Task")
+                    b.HasOne("TaskDisc.Core.Entities.TaskEntity", "Task")
                         .WithMany("TaskUsers")
                         .HasForeignKey("Id_Task")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Api_Restful.Core.Entities.UserEntity", "User")
+                    b.HasOne("TaskDisc.Core.Entities.UserEntity", "User")
                         .WithMany("TaskUsers")
                         .HasForeignKey("Id_User")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -171,20 +177,9 @@ namespace TaskDisc.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Api_Restful.Core.Entities.TokenEntity", b =>
+            modelBuilder.Entity("TaskDisc.Core.Entities.UserEntity", b =>
                 {
-                    b.HasOne("Api_Restful.Core.Entities.UserEntity", "User")
-                        .WithMany("Tokens")
-                        .HasForeignKey("ID_User")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Api_Restful.Core.Entities.UserEntity", b =>
-                {
-                    b.HasOne("Api_Restful.Core.Entities.JobTitlesEntity", "JobTitle")
+                    b.HasOne("TaskDisc.Core.Entities.JobTitlesEntity", "JobTitle")
                         .WithMany("User")
                         .HasForeignKey("ID_JobTitle")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -193,17 +188,28 @@ namespace TaskDisc.Migrations
                     b.Navigation("JobTitle");
                 });
 
-            modelBuilder.Entity("Api_Restful.Core.Entities.JobTitlesEntity", b =>
+            modelBuilder.Entity("TokenEntity", b =>
+                {
+                    b.HasOne("TaskDisc.Core.Entities.UserEntity", "User")
+                        .WithMany("Tokens")
+                        .HasForeignKey("ID_User")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TaskDisc.Core.Entities.JobTitlesEntity", b =>
                 {
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Api_Restful.Core.Entities.TaskEntity", b =>
+            modelBuilder.Entity("TaskDisc.Core.Entities.TaskEntity", b =>
                 {
                     b.Navigation("TaskUsers");
                 });
 
-            modelBuilder.Entity("Api_Restful.Core.Entities.UserEntity", b =>
+            modelBuilder.Entity("TaskDisc.Core.Entities.UserEntity", b =>
                 {
                     b.Navigation("TaskUsers");
 
