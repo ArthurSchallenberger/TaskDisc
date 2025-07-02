@@ -1,5 +1,4 @@
 ﻿using TaskDisc.Application.Interfaces;
-using AutoMapper;
 
 namespace TaskDisc.Application.Services
 {
@@ -9,42 +8,58 @@ namespace TaskDisc.Application.Services
         private readonly IUserService _userService;
         private readonly IUserRepository _userRepository;
         private readonly ITokenRepository _tokenRepository;
-        private readonly IMapper _mapper;
+        
         public AuthManagementService(
             IJwtAuthenticationService jwtAuthenticationService,
-             IUserService userService,
-             IUserRepository userRepository,
-             ITokenRepository tokenRepository,
-             IMapper mapper
-        )
+            IUserService userService,
+            IUserRepository userRepository,
+            ITokenRepository tokenRepository)
         {
             _jwtAuthenticationService = jwtAuthenticationService;
             _userService = userService;
             _userRepository = userRepository;
             _tokenRepository = tokenRepository;
-            _mapper = mapper;
         }
-
 
         public async Task<string> AuthenticateToken(string email, string password)
         {
-            if (!_userService.ValidateUserCredentials(email, password).Result)
+            if (!await _userService.ValidateUserCredentials(email, password))
             {
-                throw new UnauthorizedAccessException("invalid email or password.");
-            }
-            var token = string.Empty;
-            if (VerifyTokenValidaty(email).Result)
-            {
-                token = _jwtAuthenticationService.GenerateToken(email, password);
+                throw new UnauthorizedAccessException("Invalid email or password.");
             }
 
-            return await RegisterTokenInUser(token, email) ?  token : throw new InvalidOperationException("Failed to register token for user.");
+            string token;
+            if (await VerifyTokenValidaty(email))
+            {
+                token = await GenerateUniqueToken(email, password);
+            }
+            else
+            {
+                var validToken = await _tokenRepository.GetValidyHashTokenByEmail(email);
+                token = validToken?.Token ?? await GenerateUniqueToken(email, password);
+            }
+
+            await RegisterTokenInUser(token, email);
+            return token;
+        }
+
+        private async Task<string> GenerateUniqueToken(string email, string password)
+        {
+            string token;
+            bool isUnique;
+            do
+            {
+                token = _jwtAuthenticationService.GenerateToken(email, password);
+                isUnique = !await _tokenRepository.TokenExists(token);
+            } while (!isUnique);
+
+            return token;
         }
 
         public async Task<bool> ValidateToken(string token)
         {
-           var getTokenToValidate = _tokenRepository.GetByHashToken(token);
-            if (getTokenToValidate is null)
+            var tokenEntity = await _tokenRepository.GetByHashToken(token);
+            if (tokenEntity == null)
             {
                 throw new InvalidOperationException("Token not found.");
             }
@@ -58,23 +73,24 @@ namespace TaskDisc.Application.Services
             {
                 throw new InvalidOperationException("Token not found or has been revoked.");
             }
-       
-            var newToken = _jwtAuthenticationService.GenerateToken(tokenEntity.User.Email, tokenEntity.User.Password);
-            
-            tokenEntity.IsRevoked = true; 
-            _mapper.Map(tokenEntity, tokenEntity);
 
+            tokenEntity.IsRevoked = true;
             await _tokenRepository.Update(tokenEntity);
-            return newToken;
+
+            return await GenerateUniqueToken(tokenEntity.User.Email, tokenEntity.User.Password);
         }
 
         private async Task<bool> RegisterTokenInUser(string token, string email)
         {
             var user = await _userRepository.GetByEmail(email);
-
             if (user == null)
             {
                 throw new InvalidOperationException("User not found.");
+            }
+
+            if (await _tokenRepository.TokenExists(token))
+            {
+                return false;
             }
 
             var tokenEntity = new TokenEntity
@@ -87,11 +103,9 @@ namespace TaskDisc.Application.Services
             };
 
             var inputToken = await _tokenRepository.Add(tokenEntity);
-            
-            return inputToken is not null;
+            return inputToken != null;
         }
 
-        //TODO CHECK IF THE USER HAS A VALID TOKEN
         private async Task<bool> VerifyTokenValidaty(string email)
         {
             var user = await _userRepository.GetByEmail(email);
@@ -99,16 +113,38 @@ namespace TaskDisc.Application.Services
             {
                 throw new InvalidOperationException("User not found.");
             }
-            var expiredTokens = await _tokenRepository.GetExpiredTokensByUserId(user.Id);
-            var newExpiredTokens = expiredTokens.FirstOrDefault();
 
-            if (newExpiredTokens.Expiration_Date < DateTime.UtcNow)
+            var validToken = await _tokenRepository.GetValidyTokenByUserId(user.Id);
+            if (validToken != null && !validToken.IsRevoked && validToken.Expiration_Date > DateTime.UtcNow)
             {
-                await RefreshToken(newExpiredTokens.Token);
-                return true;
+                await UpdateTokenUsage(validToken);
+                return false; 
             }
 
-            return false;
+            var expiredTokens = await _tokenRepository.GetExpiredTokensByUserId(user.Id);
+            var expiredToken = expiredTokens.FirstOrDefault();
+            if (expiredToken != null && expiredToken.Expiration_Date < DateTime.UtcNow && !expiredToken.IsRevoked)
+            {
+                await RefreshToken(expiredToken.Token);
+                return true; 
+            }
+
+            return true;
+        }
+
+        private async Task UpdateTokenUsage(TokenEntity tokenEntity)
+        {
+            if (tokenEntity == null)
+            {
+                return; 
+            }
+
+            tokenEntity.LastUsed = DateTime.UtcNow;
+            tokenEntity.Expiration_Date = DateTime.UtcNow.AddHours(1);
+            
+            tokenEntity.Token = _jwtAuthenticationService.GenerateToken(tokenEntity.User.Email, tokenEntity.User.Password);
+
+            await _tokenRepository.Update(tokenEntity);
         }
     }
 }
