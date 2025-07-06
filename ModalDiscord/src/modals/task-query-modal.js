@@ -1,59 +1,51 @@
-import { ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } from 'discord.js';
+import { MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { api } from '../services/api.js';
+
+// Cache temporário para armazenar dados da tarefa
+const taskDataCache = {};
 
 export async function taskQueryModal(interaction) {
     console.log('Task query modal submitted');
     const taskId = interaction.fields.getTextInputValue('taskIdInput');
 
     try {
-        // Requisição à API com userId para incluir o JWT
-        const response = await api.get(`/tasks/${taskId}`, {
+        const response = await api.get(`/api/Task/${taskId}`, {
             userId: interaction.user.id,
         });
         const task = response.data;
 
-        // Modal com informações da task
-        const taskInfoModal = new ModalBuilder()
-            .setCustomId('taskInfoModal')
-            .setTitle('Task Information');
+        const cacheKey = `${interaction.user.id}-${taskId}`;
+        taskDataCache[cacheKey] = {
+            subject: task.subject || 'N/A',
+            description: task.description || 'N/A',
+            creation_Date: task.creation_Date ? new Date(task.creation_Date).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }) : 'N/A',
+            priority: task.priority?.toString() || 'N/A',
+            status: task.status || 'N/A',
+            taskId: taskId, 
+        };
 
-        const titleInfoInput = new TextInputBuilder()
-            .setCustomId('titleInfoInput')
-            .setLabel('Title')
-            .setStyle(TextInputStyle.Short)
-            .setValue(task.title || 'N/A');
+        console.log('\nTask data cached:', taskDataCache[cacheKey], '\n');
 
-        const descriptionInfoInput = new TextInputBuilder()
-            .setCustomId('descriptionInfoInput')
-            .setLabel('Description')
-            .setStyle(TextInputStyle.Paragraph)
-            .setValue(task.description || 'N/A');
+        const button = new ButtonBuilder()
+            .setCustomId(`show_task_info_${cacheKey}`)
+            .setLabel('View Task Details')
+            .setStyle(ButtonStyle.Primary);
 
-        const dateInfoInput = new TextInputBuilder()
-            .setCustomId('dateInfoInput')
-            .setLabel('Creation Date')
-            .setStyle(TextInputStyle.Short)
-            .setValue(task.creationDate || 'N/A');
+        const row = new ActionRowBuilder().addComponents(button);
 
-        const priorityInfoInput = new TextInputBuilder()
-            .setCustomId('priorityInfoInput')
-            .setLabel('Priority')
-            .setStyle(TextInputStyle.Short)
-            .setValue(task.priority || 'N/A');
-
-        const titleInfoRow = new ActionRowBuilder().addComponents(titleInfoInput);
-        const descriptionInfoRow = new ActionRowBuilder().addComponents(descriptionInfoInput);
-        const dateInfoRow = new ActionRowBuilder().addComponents(dateInfoInput);
-        const priorityInfoRow = new ActionRowBuilder().addComponents(priorityInfoInput);
-
-        taskInfoModal.addComponents(titleInfoRow, descriptionInfoRow, dateInfoRow, priorityInfoRow);
-
-        await interaction.showModal(taskInfoModal);
+        await interaction.reply({
+            content: `Task found! Click the button to view details.`,
+            components: [row],
+            flags: MessageFlags.Ephemeral,
+        });
     } catch (error) {
         const errorMessage = error.response?.data?.message || error.message;
+        console.log('\nError querying task:', errorMessage, '\n');
         await interaction.reply({
             content: `Error querying task: ${errorMessage}`,
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
         });
     }
 }
+
+export { taskDataCache };
