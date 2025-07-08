@@ -10,13 +10,13 @@ export async function taskModal(interaction) {
     const completionDate = interaction.fields.getTextInputValue('completionDateInput');
 
     try {
-        // Criar a tarefa
+       
         const taskData = {
             subject,
             description,
             priority: parseInt(priority),
             status,
-            completion_Date: new Date(completionDate).toISOString(), // Converte para ISO
+            completion_Date: new Date(completionDate)
         };
 
         const taskResponse = await api.post('/api/Task', taskData, { userId: interaction.user.id });

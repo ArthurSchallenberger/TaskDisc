@@ -21,7 +21,6 @@ export async function loginModal(interaction) {
             ephemeral: true,
         });
     } catch (error) {
-        //console.log(error)
         const errorMessage = error.response?.data?.message || error.message;
         await interaction.reply({
             content: `Error during login: ${errorMessage}`,

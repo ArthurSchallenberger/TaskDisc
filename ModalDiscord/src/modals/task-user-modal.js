@@ -7,7 +7,6 @@ export async function taskUserModal(interaction) {
     const taskId = interaction.fields.getTextInputValue('taskIdInput');
     const responsibleId = interaction.fields.getTextInputValue('responsibleIdInput');
 
-    // Validar se os IDs são números
     if (isNaN(taskId) || isNaN(responsibleId)) {
         console.log('\nError: Invalid task ID or user ID:', { taskId, responsibleId }, '\n');
         await interaction.reply({
@@ -18,7 +17,6 @@ export async function taskUserModal(interaction) {
     }
 
     try {
-        // Validar se o ID do usuário existe
         const users = await fetchUsers(interaction.user.id);
         const userExists = users.some(user => user.id === parseInt(responsibleId));
         if (!userExists) {
@@ -30,7 +28,6 @@ export async function taskUserModal(interaction) {
             return;
         }
 
-        // Associar o usuário à tarefa
         await api.post(
             '/api/TaskUser',
             {

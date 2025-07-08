@@ -40,7 +40,6 @@ export async function taskInfoSubmitModal(interaction) {
             flags: MessageFlags.Ephemeral,
         });
 
-        // Limpar o cache após a atualização
         delete taskDataCache[cacheKey];
     } catch (error) {
         const errorMessage = error.response?.data?.message || error.message;

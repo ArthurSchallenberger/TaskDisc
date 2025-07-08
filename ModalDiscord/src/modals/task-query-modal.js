@@ -1,7 +1,7 @@
 import { MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { api } from '../services/api.js';
 
-// Cache temporário para armazenar dados da tarefa
+
 const taskDataCache = {};
 
 export async function taskQueryModal(interaction) {

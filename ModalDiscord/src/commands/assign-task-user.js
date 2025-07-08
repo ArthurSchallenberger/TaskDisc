@@ -9,7 +9,6 @@ export const assignTaskUserCommand = {
         console.log('Assign task user command triggered');
 
         try {
-            // Buscar usuários para o placeholder
             const users = await fetchUsers(interaction.user.id);
             if (!users || users.length === 0) {
                 await interaction.reply({
@@ -19,7 +18,6 @@ export const assignTaskUserCommand = {
                 return;
             }
 
-            // Criar string para o placeholder com até 5 usuários (limite de 100 caracteres)
             const userList = users.slice(0, 5).map(user => `${user.name} (ID: ${user.id})`).join(', ') + (users.length > 5 ? '...' : '');
 
             const modal = new ModalBuilder()
