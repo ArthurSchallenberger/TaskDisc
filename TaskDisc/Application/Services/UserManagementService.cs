@@ -91,6 +91,13 @@ public class UserManagementService : IUserService
         return _mapper.Map<IEnumerable<UserDto>>(users);
     }
 
+    public async Task<IEnumerable<UserDto>> GetAllUserIdAndName()
+    {
+        var users = await _userRepository.GetAllUserIdAndName();
+
+        return _mapper.Map<IEnumerable<UserDto>>(users);
+    }
+
     public async Task<bool> ValidateUserCredentials(string email, string password)
     {
         var user = await _userRepository.GetByEmail(email);

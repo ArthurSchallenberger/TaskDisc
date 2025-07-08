@@ -13,5 +13,7 @@ namespace TaskDisc.Application.Interfaces
         Task<bool> DeleteUser(int id);
 
         Task<IEnumerable<UserDto>> GetAllUsers();
+
+        Task<IEnumerable<UserDto>> GetAllUserIdAndName();
     }
 }

@@ -16,10 +16,10 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<TaskUserEntity>()
             .HasKey(ut => new { ut.Id_User, ut.Id_Task });
 
-        modelBuilder.Entity<TaskUserEntity>()
-                .HasOne(tu => tu.User)
-                .WithMany(u => u.TaskUsers)
-                .HasForeignKey(tu => tu.Id_User);
+        //modelBuilder.Entity<TaskUserEntity>()
+        //        .HasOne(tu => tu.User)
+        //        .WithMany(u => u.TaskUsers)
+        //        .HasForeignKey(tu => tu.Id_User);
 
         modelBuilder.Entity<TaskEntity>()
             .HasMany(t => t.TaskUsers)

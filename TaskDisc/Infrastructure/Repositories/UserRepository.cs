@@ -52,9 +52,33 @@ public class UserRepository : IUserRepository
 
     public async Task<IEnumerable<UserEntity>> GetAll()
     {
-        return await _context.Users
-            .Include(u => u.JobTitle)
-            .ToListAsync();
+        var query =
+            from User in _context.Users
+            join jobTitle in _context.JobTitles on User.ID_JobTitle equals jobTitle.Id
+            select new UserEntity
+            {
+                Id = User.Id,
+                Name = User.Name,
+                Email = User.Email,
+                ID_JobTitle = User.ID_JobTitle,
+                JobTitle = jobTitle
+            };
+
+        return await query.ToListAsync();
+    }
+
+    
+    public async Task<IEnumerable<UserEntity>> GetAllUserIdAndName()
+    {
+        var query =
+            from User in _context.Users
+            select new UserEntity
+            {
+                Id = User.Id,
+                Name = User.Name,
+            };
+
+        return await query.ToListAsync();
     }
 
     public async Task<UserEntity> GetByEmail(string email)

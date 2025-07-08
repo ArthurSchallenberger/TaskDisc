@@ -15,9 +15,6 @@ public class TaskUserRepository : ITaskUserRepository
 
     public async Task<TaskUserEntity> Add(TaskUserEntity taskUser)
     {
-        var user = _context.Users.Find(taskUser.Id_User);
-        if (user == null)
-            throw new ArgumentException("User with the specified ID_Usuario does not exist.");
         _context.TaskUsers.Add(taskUser);
         await _context.SaveChangesAsync();
         return taskUser;

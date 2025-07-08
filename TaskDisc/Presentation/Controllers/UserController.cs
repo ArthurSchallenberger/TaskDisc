@@ -63,6 +63,18 @@ namespace TaskDisc.Presentation.Controllers
             return Ok(users);
         }
 
+      
+        [HttpGet("GetAllUsersIdAndName")]
+        public async Task<IActionResult> GetAllUsersIdAndName()
+        {
+            var users = await _userService.GetAllUserIdAndName();
+            if (users is null || !users.Any())
+            {
+                return NotFound("No users found.");
+            }
+            return Ok(users);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(int id)
         {
