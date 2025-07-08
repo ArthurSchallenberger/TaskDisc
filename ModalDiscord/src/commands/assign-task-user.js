@@ -34,7 +34,7 @@ export const assignTaskUserCommand = {
             const responsibleIdInput = new TextInputBuilder()
                 .setCustomId('responsibleIdInput')
                 .setLabel('Responsible User ID')
-                .setStyle(TextInputStyle.Short)
+                .setStyle(TextInputStyle.Paragraph)
                 .setPlaceholder(`Enter user ID: ${userList}`)
                 .setRequired(true);
 
