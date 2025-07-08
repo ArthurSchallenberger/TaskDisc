@@ -6,25 +6,25 @@ export async function taskModal(interaction) {
     const subject = interaction.fields.getTextInputValue('subjectInput');
     const description = interaction.fields.getTextInputValue('descriptionInput');
     const priority = interaction.fields.getTextInputValue('priorityInput');
-    const completion_Date = interaction.fields.getTextInputValue('completionDateInput')
     const status = interaction.fields.getTextInputValue('statusInput');
+    const completionDate = interaction.fields.getTextInputValue('completionDateInput');
 
     try {
-        const response = await api.post(
-            '/api/task',
-            {
-                subject,
-                description,
-                priority: parseInt(priority),
-                Completion_Date: new Date(completion_Date),
-                status,
-            },
-            { userId: interaction.user.id }
-        );
+        // Criar a tarefa
+        const taskData = {
+            subject,
+            description,
+            priority: parseInt(priority),
+            status,
+            completion_Date: new Date(completionDate).toISOString(), // Converte para ISO
+        };
 
-        console.log('\nTask created successfully:', { subject, description, priority, completion_Date, status }, '\n');
+        const taskResponse = await api.post('/api/Task', taskData, { userId: interaction.user.id });
+        const taskId = taskResponse.data.id;
+
+        console.log('\nTask created successfully:', { subject, description, priority, status, completionDate, taskId }, '\n');
         await interaction.reply({
-            content: `Task created!\n**Subject:** ${subject}\n**Description:** ${description}\n**Priority:** ${priority}\n**Status:** ${status}`,
+            content: `Task created!\n**Subject:** ${subject}\n**Description:** ${description}\n**Priority:** ${priority}\n**Status:** ${status}\n**Completion Date:** ${completionDate}\n**Task ID:** ${taskId}\nUse /assign-task-user to assign a user.`,
             flags: MessageFlags.Ephemeral,
         });
     } catch (error) {

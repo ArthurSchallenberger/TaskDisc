@@ -3,55 +3,63 @@ import { SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, Ac
 export const createTaskCommand = {
     command: new SlashCommandBuilder()
         .setName('create-task')
-        .setDescription('Creates a new task with a modal'),
-
+        .setDescription('Create a new task'),
     async execute(interaction) {
-        console.log('Task command triggered');
-        const modal = new ModalBuilder()
-            .setCustomId('taskModal')
-            .setTitle('Create a Task');
+        console.log('Create task command triggered');
 
-        const subjectInput = new TextInputBuilder()
-            .setCustomId('subjectInput')
-            .setLabel('Subject')
-            .setStyle(TextInputStyle.Short)
-            .setRequired(true);
+        try {
+            const modal = new ModalBuilder()
+                .setCustomId('taskModal')
+                .setTitle('Create Task');
 
-        const descriptionInput = new TextInputBuilder()
-            .setCustomId('descriptionInput')
-            .setLabel('Description')
-            .setStyle(TextInputStyle.Paragraph)
-            .setRequired(true);
+            const subjectInput = new TextInputBuilder()
+                .setCustomId('subjectInput')
+                .setLabel('Subject')
+                .setStyle(TextInputStyle.Short)
+                .setRequired(true);
 
-        const priorityInput = new TextInputBuilder()
-            .setCustomId('priorityInput')
-            .setLabel('Priority')
-            .setStyle(TextInputStyle.Short)
-            .setPlaceholder('Ex.: 1, 2, 3 (higher is more urgent)')
-            .setRequired(true);
+            const descriptionInput = new TextInputBuilder()
+                .setCustomId('descriptionInput')
+                .setLabel('Description')
+                .setStyle(TextInputStyle.Paragraph)
+                .setRequired(true);
 
-        const completionDateInput = new TextInputBuilder()
-            .setCustomId('completionDateInput')
-            .setLabel('Completion Date')
-            .setStyle(TextInputStyle.Short)
-            .setPlaceholder('DD/MM/YYYY')
-            .setRequired(true);
+            const priorityInput = new TextInputBuilder()
+                .setCustomId('priorityInput')
+                .setLabel('Priority')
+                .setStyle(TextInputStyle.Short)
+                .setPlaceholder('Ex.: 1, 2, 3 (higher is more urgent)')
+                .setRequired(true);
 
-        const statusInput = new TextInputBuilder()
-            .setCustomId('statusInput')
-            .setLabel('Status')
-            .setStyle(TextInputStyle.Short)
-            .setPlaceholder('Ex.: Pending, In Progress, Completed')
-            .setRequired(true);
+            const completionDateInput = new TextInputBuilder()
+                .setCustomId('completionDateInput')
+                .setLabel('Completion Date')
+                .setStyle(TextInputStyle.Short)
+                .setPlaceholder('DD/MM/YYYY')
+                .setRequired(true);
 
-        const subjectRow = new ActionRowBuilder().addComponents(subjectInput);
-        const descriptionRow = new ActionRowBuilder().addComponents(descriptionInput);
-        const priorityRow = new ActionRowBuilder().addComponents(priorityInput);
-        const completionDateRow = new ActionRowBuilder().addComponents(completionDateInput);
-        const statusRow = new ActionRowBuilder().addComponents(statusInput);
+            const statusInput = new TextInputBuilder()
+                .setCustomId('statusInput')
+                .setLabel('Status')
+                .setStyle(TextInputStyle.Short)
+                .setPlaceholder('Ex.: Pending, In Progress, Completed')
+                .setRequired(true);
 
-        modal.addComponents(subjectRow, descriptionRow, priorityRow, completionDateRow, statusRow);
+            const subjectRow = new ActionRowBuilder().addComponents(subjectInput);
+            const descriptionRow = new ActionRowBuilder().addComponents(descriptionInput);
+            const priorityRow = new ActionRowBuilder().addComponents(priorityInput);
+            const completionDateRow = new ActionRowBuilder().addComponents(completionDateInput);
+            const statusRow = new ActionRowBuilder().addComponents(statusInput);
 
-        await interaction.showModal(modal);
+            modal.addComponents(subjectRow, descriptionRow, priorityRow, completionDateRow, statusRow);
+
+            await interaction.showModal(modal);
+        } catch (error) {
+            console.log('\nError creating task modal:', error.message, '\n');
+            await interaction.reply({
+                content: `Error preparing task creation: ${error.message}`,
+                flags: MessageFlags.Ephemeral,
+            });
+        }
     },
 };
