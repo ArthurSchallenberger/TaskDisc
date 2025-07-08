@@ -1,5 +1,4 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } from 'discord.js';
+import { SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, MessageFlags } from 'discord.js';
 
 export const createTaskCommand = {
     command: new SlashCommandBuilder()
@@ -12,34 +11,46 @@ export const createTaskCommand = {
             .setCustomId('taskModal')
             .setTitle('Create a Task');
 
-        const titleInput = new TextInputBuilder()
-            .setCustomId('titleInput')
-            .setLabel('Titulo')
-            .setStyle(TextInputStyle.Short);
+        const subjectInput = new TextInputBuilder()
+            .setCustomId('subjectInput')
+            .setLabel('Subject')
+            .setStyle(TextInputStyle.Short)
+            .setRequired(true);
 
         const descriptionInput = new TextInputBuilder()
             .setCustomId('descriptionInput')
-            .setLabel('Descricao')
-            .setStyle(TextInputStyle.Paragraph);
-
-        const creationDateInput = new TextInputBuilder()
-            .setCustomId('creationDateInput')
-            .setLabel('Data de Criacao')
-            .setStyle(TextInputStyle.Short)
-            .setPlaceholder('AAAA-MM-DD');
+            .setLabel('Description')
+            .setStyle(TextInputStyle.Paragraph)
+            .setRequired(true);
 
         const priorityInput = new TextInputBuilder()
             .setCustomId('priorityInput')
-            .setLabel('Prioridade')
+            .setLabel('Priority')
             .setStyle(TextInputStyle.Short)
-            .setPlaceholder('Ex.: Baixa, Urgente');
+            .setPlaceholder('Ex.: 1, 2, 3 (higher is more urgent)')
+            .setRequired(true);
 
-        const titleRow = new ActionRowBuilder().addComponents(titleInput);
+        const completionDateInput = new TextInputBuilder()
+            .setCustomId('completionDateInput')
+            .setLabel('Completion Date')
+            .setStyle(TextInputStyle.Short)
+            .setPlaceholder('DD/MM/YYYY')
+            .setRequired(true);
+
+        const statusInput = new TextInputBuilder()
+            .setCustomId('statusInput')
+            .setLabel('Status')
+            .setStyle(TextInputStyle.Short)
+            .setPlaceholder('Ex.: Pending, In Progress, Completed')
+            .setRequired(true);
+
+        const subjectRow = new ActionRowBuilder().addComponents(subjectInput);
         const descriptionRow = new ActionRowBuilder().addComponents(descriptionInput);
-        const dateRow = new ActionRowBuilder().addComponents(creationDateInput);
         const priorityRow = new ActionRowBuilder().addComponents(priorityInput);
+        const completionDateRow = new ActionRowBuilder().addComponents(completionDateInput);
+        const statusRow = new ActionRowBuilder().addComponents(statusInput);
 
-        modal.addComponents(titleRow, descriptionRow, dateRow, priorityRow);
+        modal.addComponents(subjectRow, descriptionRow, priorityRow, completionDateRow, statusRow);
 
         await interaction.showModal(modal);
     },

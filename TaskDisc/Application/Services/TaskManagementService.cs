@@ -26,6 +26,7 @@ public class TaskManagementService : ITaskService
             throw new ArgumentNullException(nameof(taskDto), "Task data cannot be null.");
         }
 
+        taskDto.Creation_Date = DateTime.UtcNow;
         var task = _mapper.Map<TaskEntity>(taskDto);
 
         return await _taskRepository.Add(task);
