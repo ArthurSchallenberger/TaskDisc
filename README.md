@@ -18,6 +18,9 @@
 [![discord.js](https://img.shields.io/badge/discord.js-14.15.3-5865F2?logo=discord)](https://discord.js.org/)
 </br></br>
 </div>
+
+![esseaqui](https://github.com/user-attachments/assets/fc7fbc8d-7012-4a2f-8887-66a890607cce)
+
 TaskDisc is a project built following the **Clean Architecture** pattern, ensuring separation of concerns, testability, and ease of maintenance. It consists of three main components:
 
 - **Backend/API**: Developed in .NET 8, handling business logic, data persistence, and RESTful endpoints.
