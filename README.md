@@ -19,7 +19,11 @@
 </br></br>
 </div>
 
-![esseaqui](https://github.com/user-attachments/assets/fc7fbc8d-7012-4a2f-8887-66a890607cce)
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/cb026c14-6e80-40f9-a29a-d9a7c7114c18" alt="esseaqui2">
+</div>
+</br></br>
 
 TaskDisc is a project built following the **Clean Architecture** pattern, ensuring separation of concerns, testability, and ease of maintenance. It consists of three main components:
 
